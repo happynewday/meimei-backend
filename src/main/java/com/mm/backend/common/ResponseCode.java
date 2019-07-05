@@ -3,7 +3,6 @@ package com.mm.backend.common;
 /**
  * @ClassName ResponseCode
  * @Description TODO
- * @Author XUJIAN
  * @Date 2019/7/3 17:04
  */
 public enum ResponseCode {

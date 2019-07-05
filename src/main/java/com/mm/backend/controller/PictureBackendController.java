@@ -6,11 +6,13 @@ import com.mm.backend.action.PictureListBackendAction;
 import com.mm.backend.action.RegistUserBackendAction;
 import com.mm.backend.common.PageInfo;
 import com.mm.backend.common.RestResult;
+import com.mm.backend.service.PictureBackendService;
 import com.mm.backend.vo.PictureCollectDetailBackendVo;
 import com.mm.backend.vo.PictureListBackendVo;
 import com.mm.backend.vo.UserBackendVo;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -20,7 +22,6 @@ import org.springframework.web.bind.annotation.RestController;
 /**
  * @ClassName PictureBackendController
  * @Description TODO
- * @Author XUJIAN
  * @Date 2019/7/3 20:43
  */
 
@@ -28,11 +29,15 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping(value = "/backend/picture")
 @Api(tags = "图集相关API")
 public class PictureBackendController {
+
+    @Autowired
+    private PictureBackendService pictureBackendService;
+
     @RequestMapping(value = "/list",method = RequestMethod.POST,
             headers="Content-Type=application/json;charset=UTF-8", produces="application/json;charset=UTF-8")
     @ApiOperation(value = "图集列表", notes = "图集列表")
     RestResult<PageInfo<PictureListBackendVo>> collectList(@RequestBody @Validated PictureListBackendAction action) {
-        PageInfo<PictureListBackendVo> page = new PageInfo<PictureListBackendVo>();
+        PageInfo<PictureListBackendVo> page = pictureBackendService.getPictureCollectList(action.getPageNum(), action.getPageSize());
         return RestResult.createBySuccess(page);
     }
 

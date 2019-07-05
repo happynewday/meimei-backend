@@ -10,7 +10,6 @@ import javax.validation.constraints.Size;
 /**
  * @ClassName LoginBackendAction
  * @Description TODO
- * @Author XUJIAN
  * @Date 2019/7/3 17:14
  */
 

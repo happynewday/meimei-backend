@@ -24,7 +24,6 @@ import java.util.List;
 /**
  * @ClassName Swagger2Config
  * @Description TODO
- * @Author XUJIAN
  * @Date 2019/7/4 11:53
  */
 @Configuration

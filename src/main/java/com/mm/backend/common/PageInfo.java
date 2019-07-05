@@ -9,7 +9,6 @@ import java.util.List;
 /**
  * @ClassName PageInfo
  * @Description TODO
- * @Author XUJIAN
  * @Date 2019/7/3 20:57
  */
 public class PageInfo<T> extends PageSerializable<T> {

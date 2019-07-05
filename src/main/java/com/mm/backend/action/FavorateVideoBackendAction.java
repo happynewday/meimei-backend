@@ -9,7 +9,6 @@ import javax.validation.constraints.Min;
 /**
  * @ClassName FavorateVideoBackendAction
  * @Description TODO
- * @Author XUJIAN
  * @Date 2019/7/3 22:05
  */
 

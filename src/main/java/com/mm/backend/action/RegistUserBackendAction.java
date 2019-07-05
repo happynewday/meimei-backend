@@ -11,7 +11,6 @@ import javax.validation.constraints.Size;
 /**
  * @ClassName RegistUserBackendAction
  * @Description TODO
- * @Author XUJIAN
  * @Date 2019/7/3 16:31
  */
 

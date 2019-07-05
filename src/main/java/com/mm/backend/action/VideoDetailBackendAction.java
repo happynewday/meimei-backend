@@ -7,18 +7,18 @@ import lombok.Data;
 import javax.validation.constraints.Min;
 
 /**
- * @ClassName FavoratePictureBackendAction
+ * @ClassName VideoDetailBackendAction
  * @Description TODO
- * @Date 2019/7/3 21:22
+ * @Date 2019/7/4 15:35
  */
 
 @Data
-@ApiModel(value = "收藏图集接口")
-public class FavoratePictureBackendAction {
+@ApiModel(value = "视频详情接口")
+public class VideoDetailBackendAction {
     /**
-     *  图集ID
+     *  视频ID
      */
     @Min(1)
-    @ApiModelProperty(value = "图集ID", example = "1")
+    @ApiModelProperty(value = "视频ID", example = "1")
     private  Integer id;
 }

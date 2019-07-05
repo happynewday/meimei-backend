@@ -7,18 +7,18 @@ import lombok.Data;
 import javax.validation.constraints.Min;
 
 /**
- * @ClassName FavoratePictureBackendAction
+ * @ClassName OrderRequestBackendAction
  * @Description TODO
- * @Date 2019/7/3 21:22
+ * @Date 2019/7/4 15:52
  */
 
 @Data
-@ApiModel(value = "收藏图集接口")
-public class FavoratePictureBackendAction {
+@ApiModel(value = "下单请求接口")
+public class OrderRequestBackendAction {
     /**
-     *  图集ID
+     *  商品ID
      */
     @Min(1)
-    @ApiModelProperty(value = "图集ID", example = "1")
+    @ApiModelProperty(value = "商品ID", example = "1")
     private  Integer id;
 }

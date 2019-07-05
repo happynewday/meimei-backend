@@ -10,7 +10,6 @@ import lombok.NoArgsConstructor;
 /**
  * @ClassName UserBackendVo
  * @Description TODO
- * @Author XUJIAN
  * @Date 2019/7/3 16:51
  */
 

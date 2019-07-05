@@ -16,7 +16,6 @@ import io.swagger.annotations.Api;
 /**
  * @ClassName UserBackendController
  * @Description TODO
- * @Author XUJIAN
  * @Date 2019/7/3 16:07
  */
 

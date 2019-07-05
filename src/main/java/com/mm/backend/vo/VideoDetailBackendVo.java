@@ -5,35 +5,27 @@ import io.swagger.annotations.ApiModelProperty;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
+
+import java.util.List;
 
 /**
- * @ClassName VideoListBackendVo
+ * @ClassName VideoDetailBackendVo
  * @Description TODO
- * @Date 2019/7/3 22:00
+ * @Date 2019/7/4 15:36
  */
 
 @Data
 @Builder
 @AllArgsConstructor
+@NoArgsConstructor
 @JsonInclude(JsonInclude.Include.NON_NULL)
-public class VideoListBackendVo {
+public class VideoDetailBackendVo {
     /**
-     * 图集ID
+     * 视频ID
      */
     @ApiModelProperty(value = "视频ID")
     private Integer id;
-
-    /**
-     * 昵称
-     */
-    @ApiModelProperty(value = "封面图")
-    private String cover;
-
-    /**
-     * 图集名称
-     */
-    @ApiModelProperty(value = "视频名称")
-    private String name;
 
     /**
      * 演员
@@ -42,14 +34,26 @@ public class VideoListBackendVo {
     private String actor;
 
     /**
-     * 时长
+     * 图片数量
      */
-    @ApiModelProperty(value = "时长，秒为单位")
-    private Integer duration;
+    @ApiModelProperty(value = "预览图片数量")
+    private Integer number;
+
+    /**
+     * 图片列表
+     */
+    @ApiModelProperty(value = "预览图片列表")
+    private List<String> pictures;
 
     /**
      * 视频链接
      */
     @ApiModelProperty(value = "视频链接")
     private String link;
+
+    /**
+     * 图片列表
+     */
+    @ApiModelProperty(value = "视频长度，秒为单位")
+    private Integer duration;
 }

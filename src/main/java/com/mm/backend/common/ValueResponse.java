@@ -5,7 +5,6 @@ import java.io.Serializable;
 /**
  * @ClassName ValueResponse
  * @Description TODO
- * @Author XUJIAN
  * @Date 2019/7/3 17:06
  */
 public class ValueResponse<T> implements Serializable

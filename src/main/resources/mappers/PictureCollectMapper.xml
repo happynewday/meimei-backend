@@ -1,0 +1,128 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.mm.backend.dao.PictureCollectMapper" >
+  <resultMap id="BaseResultMap" type="com.mm.backend.pojo.PictureCollect" >
+    <constructor >
+      <idArg column="id" jdbcType="INTEGER" javaType="java.lang.Integer" />
+      <arg column="collect_name" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="cover" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="picture_number" jdbcType="INTEGER" javaType="java.lang.Integer" />
+      <arg column="actor" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="create_time" jdbcType="BIGINT" javaType="java.lang.Long" />
+      <arg column="is_delete" jdbcType="BIT" javaType="java.lang.Boolean" />
+    </constructor>
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, collect_name, cover, picture_number, actor, create_time, is_delete
+  </sql>
+
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from picture_collect
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+
+  <select id="selectAll" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from picture_collect
+    order by id desc
+  </select>
+
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from picture_collect
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.mm.backend.pojo.PictureCollect" >
+    insert into picture_collect (id, collect_name, picture_number,
+      actor, create_time, is_delete
+      )
+    values (#{id,jdbcType=INTEGER}, #{collectName,jdbcType=VARCHAR}, #{pictureNumber,jdbcType=INTEGER},
+      #{actor,jdbcType=VARCHAR}, #{createTime,jdbcType=BIGINT}, #{isDelete,jdbcType=BIT}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.mm.backend.pojo.PictureCollect" >
+    insert into picture_collect
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="collectName != null" >
+        collect_name,
+      </if>
+      <if test="cover != null" >
+        cover,
+      </if>
+      <if test="pictureNumber != null" >
+        picture_number,
+      </if>
+      <if test="actor != null" >
+        actor,
+      </if>
+      <if test="createTime != null" >
+        create_time,
+      </if>
+      <if test="isDelete != null" >
+        is_delete,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="collectName != null" >
+        #{collectName,jdbcType=VARCHAR},
+      </if>
+      <if test="cover != null" >
+        #{cover,jdbcType=VARCHAR},
+      </if>
+      <if test="pictureNumber != null" >
+        #{pictureNumber,jdbcType=INTEGER},
+      </if>
+      <if test="actor != null" >
+        #{actor,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null" >
+        #{createTime,jdbcType=BIGINT},
+      </if>
+      <if test="isDelete != null" >
+        #{isDelete,jdbcType=BIT},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.mm.backend.pojo.PictureCollect" >
+    update picture_collect
+    <set >
+      <if test="collectName != null" >
+        collect_name = #{collectName,jdbcType=VARCHAR},
+      </if>
+      <if test="cover != null" >
+        cover = #{pictureNumber,jdbcType=VARCHAR},
+      </if>
+      <if test="pictureNumber != null" >
+        picture_number = #{pictureNumber,jdbcType=INTEGER},
+      </if>
+      <if test="actor != null" >
+        actor = #{actor,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null" >
+        create_time = #{createTime,jdbcType=BIGINT},
+      </if>
+      <if test="isDelete != null" >
+        is_delete = #{isDelete,jdbcType=BIT},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.mm.backend.pojo.PictureCollect" >
+    update picture_collect
+    set collect_name = #{collectName,jdbcType=VARCHAR},
+      cover = #{cover,jdbcType=VARCHAR},
+      picture_number = #{pictureNumber,jdbcType=INTEGER},
+      actor = #{actor,jdbcType=VARCHAR},
+      create_time = #{createTime,jdbcType=BIGINT},
+      is_delete = #{isDelete,jdbcType=BIT}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>

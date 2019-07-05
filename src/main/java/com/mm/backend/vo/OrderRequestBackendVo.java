@@ -7,12 +7,13 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 /**
- * @ClassName PictureCollectDetailBackendVo
+ * @ClassName OrderRequestBackendVo
  * @Description TODO
- * @Date 2019/7/3 21:07
+ * @Date 2019/7/4 16:45
  */
 
 @Data
@@ -20,28 +21,22 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 @JsonInclude(JsonInclude.Include.NON_NULL)
-public class PictureCollectDetailBackendVo {
+public class OrderRequestBackendVo {
     /**
-     * 图集ID
+     * 商品ID
      */
-    @ApiModelProperty(value = "图集ID")
+    @ApiModelProperty(value = "商品ID")
     private Integer id;
 
     /**
-     * 演员
+     * 订单ID
      */
-    @ApiModelProperty(value = "演员")
-    private String actor;
+    @ApiModelProperty(value = "订单ID")
+    private Integer orderId;
 
     /**
-     * 图片数量
+     * 金额
      */
-    @ApiModelProperty(value = "图片数量")
-    private Integer number;
-
-    /**
-     * 图片列表
-     */
-    @ApiModelProperty(value = "图片列表")
-    private List<String> pictures;
+    @ApiModelProperty(value = "金额")
+    private Double price;
 }
