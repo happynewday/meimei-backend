@@ -40,7 +40,7 @@ public class UserBackendVo {
     /**
      * 等级
      */
-    @ApiModelProperty(value = "VIP等级，1为普通用户，2为VIP")
+    @ApiModelProperty(value = "VIP等级，0为普通用户，1为VIP")
     private Integer level;
 
     /**
@@ -60,10 +60,4 @@ public class UserBackendVo {
      */
     @ApiModelProperty(value = "标识")
     private String access_token;
-
-    /**
-     * 标识有效期
-     */
-    @ApiModelProperty(value = "标识有效期,单位为秒")
-    private Integer expired_in;
 }

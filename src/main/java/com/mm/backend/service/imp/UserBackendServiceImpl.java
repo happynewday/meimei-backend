@@ -1,0 +1,80 @@
+package com.mm.backend.service.imp;
+
+import com.mm.backend.common.StringUtils;
+import com.mm.backend.dao.UserMapper;
+import com.mm.backend.pojo.User;
+import com.mm.backend.redis.RedisService;
+import com.mm.backend.service.UserBackendService;
+import com.mm.backend.vo.UserBackendVo;
+import com.mm.backend.vo.assemble.UserAssembleHelper;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.stereotype.Service;
+
+/**
+ * @ClassName UserBackendServiceImpl
+ * @Description TODO
+ * @Date 2019/7/8 10:05
+ */
+@Service
+public class UserBackendServiceImpl implements UserBackendService {
+    @Autowired
+    private UserMapper userMapper;
+
+    @Autowired
+    private RedisService redisService;
+
+    public UserBackendVo userRegist(String username, String password) throws Exception{
+        User user = userMapper.selectByUsername(username);
+        if(null != user){
+            throw new Exception("该账号已存在");
+        }
+
+        BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+        String encodedPassword =  passwordEncoder.encode(password);
+        //String encodedPassword = password;
+        String token = StringUtils.randomString(64);
+        long time = System.currentTimeMillis();
+
+        user = User.builder().
+                username(username).
+                password(encodedPassword).
+                accessToken(token).
+                createTime(time).
+                build();
+
+        if(0 == userMapper.insertSelective(user)){
+            throw new Exception("添加用户失败");
+        }
+
+        user = userMapper.selectByPrimaryKey(user.getId());
+
+        redisService.set(token, user.getId().toString(), 86400 * 30);
+
+        return UserAssembleHelper.assembleUserAuthInfo(user);
+    }
+
+    public UserBackendVo login(String username, String password) throws Exception {
+        User user = userMapper.selectByUsername(username);
+        if(null == user){
+            throw new Exception("用户不存在");
+        }
+
+        BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
+        if(!encoder.matches(password, user.getPassword())){
+            throw new Exception("密码错误");
+        }
+
+        //生成用户token
+        String oldToken = user.getAccessToken();
+        String token = StringUtils.randomString(64);
+        user.setAccessToken(token);
+        userMapper.updateByPrimaryKeySelective(user);
+
+        //更新redis
+        redisService.del(oldToken);
+        redisService.set(token, user.getId().toString(), 86400 * 30);
+
+        return UserAssembleHelper.assembleUserAuthInfo(user);
+    }
+}

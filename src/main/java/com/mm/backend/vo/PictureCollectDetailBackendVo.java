@@ -43,5 +43,5 @@ public class PictureCollectDetailBackendVo {
      * 图片列表
      */
     @ApiModelProperty(value = "图片列表")
-    private List<String> pictures;
+    private List<SinglePictureVo> pictures;
 }

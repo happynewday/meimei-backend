@@ -53,6 +53,7 @@ public class PictureBackendController {
             headers="Content-Type=application/json;charset=UTF-8", produces="application/json;charset=UTF-8")
     @ApiOperation(value = "收藏图集", notes = "收藏图集")
     RestResult<Void> favoratePicture(@RequestBody @Validated FavoratePictureBackendAction action) {
+        //boolean ret = pictureBackendService.addFavoratePicture();
         return RestResult.createBySuccess();
     }
 
