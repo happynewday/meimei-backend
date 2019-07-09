@@ -43,7 +43,7 @@ public class VideoDetailBackendVo {
      * 图片列表
      */
     @ApiModelProperty(value = "预览图片列表")
-    private List<String> pictures;
+    private List<VideoThumbnailBackendVo> pictures;
 
     /**
      * 视频链接

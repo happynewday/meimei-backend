@@ -5,17 +5,22 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-@Builder
 @Data
+@Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class FavoratePicture {
+public class Video {
     private Integer id;
 
-    private Integer userId;
+    private String name;
 
-    private Integer collectId;
+    private Integer duration;
+
+    private String cover;
+
+    private String actor;
+
+    private String link;
 
     private Long createTime;
-
 }

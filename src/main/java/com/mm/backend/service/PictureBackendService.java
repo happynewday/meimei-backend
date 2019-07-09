@@ -14,5 +14,7 @@ public interface PictureBackendService {
 
     PictureCollectDetailBackendVo getPictureCollectDetails(Integer collectId) throws Exception;
 
-//    boolean addFavoratePicture(Integer userId, Integer collectId);
+    boolean addFavoratePicture(Integer userId, Integer collectId);
+
+    boolean removeFavoratePicture(Integer userId, Integer collectId);
 }

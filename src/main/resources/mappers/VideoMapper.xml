@@ -1,63 +1,66 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace="com.mm.backend.dao.PictureCollectMapper" >
-  <resultMap id="BaseResultMap" type="com.mm.backend.pojo.PictureCollect" >
+<mapper namespace="com.mm.backend.dao.VideoMapper" >
+  <resultMap id="BaseResultMap" type="com.mm.backend.pojo.Video" >
     <constructor >
       <idArg column="id" jdbcType="INTEGER" javaType="java.lang.Integer" />
-      <arg column="collect_name" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="name" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="duration" jdbcType="INTEGER" javaType="java.lang.Integer" />
       <arg column="cover" jdbcType="VARCHAR" javaType="java.lang.String" />
-      <arg column="picture_number" jdbcType="INTEGER" javaType="java.lang.Integer" />
       <arg column="actor" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="link" jdbcType="VARCHAR" javaType="java.lang.String" />
       <arg column="create_time" jdbcType="BIGINT" javaType="java.lang.Long" />
     </constructor>
   </resultMap>
   <sql id="Base_Column_List" >
-    id, collect_name, cover, picture_number, actor, create_time
+    id, name, duration, cover, actor, link, create_time
   </sql>
-
   <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
     select 
     <include refid="Base_Column_List" />
-    from picture_collect
+    from video
     where id = #{id,jdbcType=INTEGER}
   </select>
 
-  <select id="selectAll" resultMap="BaseResultMap">
+  <select id="selectAll" resultMap="BaseResultMap" >
     select
     <include refid="Base_Column_List" />
-    from picture_collect
+    from video
     order by id desc
   </select>
 
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
-    delete from picture_collect
+    delete from video
     where id = #{id,jdbcType=INTEGER}
   </delete>
-  <insert id="insert" parameterType="com.mm.backend.pojo.PictureCollect" >
-    insert into picture_collect (id, collect_name, picture_number,
-      actor, create_time
+  <insert id="insert" parameterType="com.mm.backend.pojo.Video" >
+    insert into video (id, name, duration, cover,
+      actor, link, create_time
       )
-    values (#{id,jdbcType=INTEGER}, #{collectName,jdbcType=VARCHAR}, #{pictureNumber,jdbcType=INTEGER},
-      #{actor,jdbcType=VARCHAR}, #{createTime,jdbcType=BIGINT}
+    values (#{id,jdbcType=INTEGER}, #{name,jdbcType=VARCHAR}, #{duration,jdbcType=INTEGER}, #{cover,jdbcType=VARCHAR},
+      #{actor,jdbcType=VARCHAR}, #{link,jdbcType=VARCHAR}, #{createTime,jdbcType=BIGINT}
       )
   </insert>
-  <insert id="insertSelective" parameterType="com.mm.backend.pojo.PictureCollect" >
-    insert into picture_collect
+  <insert id="insertSelective" parameterType="com.mm.backend.pojo.Video" >
+    insert into video
     <trim prefix="(" suffix=")" suffixOverrides="," >
       <if test="id != null" >
         id,
       </if>
-      <if test="collectName != null" >
-        collect_name,
+      <if test="name != null" >
+        name,
+      </if>
+      <if test="duration != null" >
+        duration,
       </if>
       <if test="cover != null" >
         cover,
       </if>
-      <if test="pictureNumber != null" >
-        picture_number,
-      </if>
       <if test="actor != null" >
         actor,
+      </if>
+      <if test="link != null" >
+        link,
       </if>
       <if test="createTime != null" >
         create_time,
@@ -67,37 +70,43 @@
       <if test="id != null" >
         #{id,jdbcType=INTEGER},
       </if>
-      <if test="collectName != null" >
-        #{collectName,jdbcType=VARCHAR},
+      <if test="name != null" >
+        #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="duration != null" >
+        #{duration,jdbcType=INTEGER},
       </if>
       <if test="cover != null" >
         #{cover,jdbcType=VARCHAR},
       </if>
-      <if test="pictureNumber != null" >
-        #{pictureNumber,jdbcType=INTEGER},
-      </if>
       <if test="actor != null" >
         #{actor,jdbcType=VARCHAR},
+      </if>
+      <if test="link != null" >
+        #{link,jdbcType=VARCHAR},
       </if>
       <if test="createTime != null" >
         #{createTime,jdbcType=BIGINT},
       </if>
     </trim>
   </insert>
-  <update id="updateByPrimaryKeySelective" parameterType="com.mm.backend.pojo.PictureCollect" >
-    update picture_collect
+  <update id="updateByPrimaryKeySelective" parameterType="com.mm.backend.pojo.Video" >
+    update video
     <set >
-      <if test="collectName != null" >
-        collect_name = #{collectName,jdbcType=VARCHAR},
+      <if test="name != null" >
+        name = #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="duration != null" >
+        duration = #{duration,jdbcType=INTEGER},
       </if>
       <if test="cover != null" >
-        cover = #{pictureNumber,jdbcType=VARCHAR},
-      </if>
-      <if test="pictureNumber != null" >
-        picture_number = #{pictureNumber,jdbcType=INTEGER},
+        cover = #{cover,jdbcType=VARCHAR},
       </if>
       <if test="actor != null" >
         actor = #{actor,jdbcType=VARCHAR},
+      </if>
+      <if test="link != null" >
+        link = #{link,jdbcType=VARCHAR},
       </if>
       <if test="createTime != null" >
         create_time = #{createTime,jdbcType=BIGINT},
@@ -105,12 +114,13 @@
     </set>
     where id = #{id,jdbcType=INTEGER}
   </update>
-  <update id="updateByPrimaryKey" parameterType="com.mm.backend.pojo.PictureCollect" >
-    update picture_collect
-    set collect_name = #{collectName,jdbcType=VARCHAR},
+  <update id="updateByPrimaryKey" parameterType="com.mm.backend.pojo.Video" >
+    update video
+    set name = #{name,jdbcType=VARCHAR},
+      duration = #{duration,jdbcType=INTEGER},
       cover = #{cover,jdbcType=VARCHAR},
-      picture_number = #{pictureNumber,jdbcType=INTEGER},
       actor = #{actor,jdbcType=VARCHAR},
+      link = #{link,jdbcType=VARCHAR},
       create_time = #{createTime,jdbcType=BIGINT}
     where id = #{id,jdbcType=INTEGER}
   </update>

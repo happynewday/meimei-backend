@@ -6,6 +6,7 @@ import com.mm.backend.action.PictureListBackendAction;
 import com.mm.backend.action.RegistUserBackendAction;
 import com.mm.backend.common.PageInfo;
 import com.mm.backend.common.RestResult;
+import com.mm.backend.interceptor.RequestHeaderContext;
 import com.mm.backend.service.PictureBackendService;
 import com.mm.backend.vo.PictureCollectDetailBackendVo;
 import com.mm.backend.vo.PictureListBackendVo;
@@ -53,14 +54,25 @@ public class PictureBackendController {
             headers="Content-Type=application/json;charset=UTF-8", produces="application/json;charset=UTF-8")
     @ApiOperation(value = "收藏图集", notes = "收藏图集")
     RestResult<Void> favoratePicture(@RequestBody @Validated FavoratePictureBackendAction action) {
-        //boolean ret = pictureBackendService.addFavoratePicture();
-        return RestResult.createBySuccess();
+        Integer uid = Integer.valueOf(RequestHeaderContext.getInstance().getUserId());
+        boolean ret = pictureBackendService.addFavoratePicture(uid, action.getId());
+        if(ret) {
+            return RestResult.createBySuccess();
+        } else {
+            return RestResult.createByError();
+        }
     }
 
     @RequestMapping(value = "/unfavorate",method = RequestMethod.POST,
             headers="Content-Type=application/json;charset=UTF-8", produces="application/json;charset=UTF-8")
     @ApiOperation(value = "取消收藏图集", notes = "取消收藏图集")
     RestResult<Void> unfavoratePicture(@RequestBody @Validated FavoratePictureBackendAction action) {
-        return RestResult.createBySuccess();
+        Integer uid = Integer.valueOf(RequestHeaderContext.getInstance().getUserId());
+        boolean ret = pictureBackendService.removeFavoratePicture(uid, action.getId());
+        if(ret) {
+            return RestResult.createBySuccess();
+        } else {
+            return RestResult.createByError();
+        }
     }
 }
