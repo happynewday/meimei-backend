@@ -54,7 +54,7 @@ public class PictureAssembleHelper {
                 url(picture.getUrl()).
                 height(picture.getHeight()).
                 width(picture.getWidth()).
-                desc(picture.getDesc()).
+                desc(picture.getDescription()).
                 build();
     }
 }

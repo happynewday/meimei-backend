@@ -13,6 +13,7 @@ import com.mm.backend.vo.VideoDetailBackendVo;
 import com.mm.backend.vo.VideoListBackendVo;
 import com.mm.backend.vo.assemble.VideoAssembleHelper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 
@@ -21,6 +22,7 @@ import java.util.List;
  * @Description TODO
  * @Date 2019/7/9 11:07
  */
+@Service
 public class VideoBackendServiceImpl implements VideoBackendService {
     @Autowired
     VideoMapper videoMapper;

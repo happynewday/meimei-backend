@@ -9,20 +9,20 @@ import lombok.NoArgsConstructor;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class VideoThumbmail {
+public class Order {
     private Integer id;
 
-    private Integer videoId;
+    private Integer userId;
 
-    private String link;
+    private Integer productId;
 
-    private Integer height;
+    private Double originPrice;
 
-    private Integer width;
+    private Double payPrice;
 
-    private String description;
+    private Short status;
 
     private Long createTime;
 
-    private Integer order;
+    private Long payTime;
 }

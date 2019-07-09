@@ -26,7 +26,7 @@ public class OrderRequestBackendVo {
      * 商品ID
      */
     @ApiModelProperty(value = "商品ID")
-    private Integer id;
+    private Integer productId;
 
     /**
      * 订单ID

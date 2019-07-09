@@ -46,8 +46,12 @@ public class PictureBackendController {
             headers="Content-Type=application/json;charset=UTF-8", produces="application/json;charset=UTF-8")
     @ApiOperation(value = "图集详情", notes = "图集详情")
     RestResult<PictureCollectDetailBackendVo> collectDetail(@RequestBody @Validated PictureCollectDetailBackendAction action) {
-        PictureCollectDetailBackendVo p = new PictureCollectDetailBackendVo();
-        return RestResult.createBySuccess(p);
+        try {
+            PictureCollectDetailBackendVo p = pictureBackendService.getPictureCollectDetails(action.getId());
+            return RestResult.createBySuccess(p);
+        } catch (Exception e){
+            return RestResult.createByErrorMessage(e.getMessage());
+        }
     }
 
     @RequestMapping(value = "/favorate",method = RequestMethod.POST,

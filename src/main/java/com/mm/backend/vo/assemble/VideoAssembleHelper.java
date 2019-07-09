@@ -45,6 +45,7 @@ public class VideoAssembleHelper {
         return VideoDetailBackendVo.builder()
                 .id(video.getId())
                 .actor(video.getActor())
+                .cover(video.getCover())
                 .number(videoThumbmails.size())
                 .pictures(videoThumbnailBackendVos)
                 .link(video.getLink())
@@ -58,7 +59,7 @@ public class VideoAssembleHelper {
                 .url(videoThumbmail.getLink())
                 .height(videoThumbmail.getHeight())
                 .width(videoThumbmail.getWidth())
-                .desc(videoThumbmail.getDesc())
+                .desc(videoThumbmail.getDescription())
                 .build();
     }
 }

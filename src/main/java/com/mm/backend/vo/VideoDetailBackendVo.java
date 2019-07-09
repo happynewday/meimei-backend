@@ -34,6 +34,12 @@ public class VideoDetailBackendVo {
     private String actor;
 
     /**
+     * 封面
+     */
+    @ApiModelProperty(value = "封面")
+    private String cover;
+
+    /**
      * 图片数量
      */
     @ApiModelProperty(value = "预览图片数量")

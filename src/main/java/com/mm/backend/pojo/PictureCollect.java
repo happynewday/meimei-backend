@@ -19,6 +19,4 @@ public class PictureCollect {
     private String actor;
 
     private Long createTime;
-
-    private Boolean isDelete;
 }

@@ -3,24 +3,22 @@ package com.mm.backend.pojo;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 @Data
 @Builder
 @AllArgsConstructor
-public class PictureDetail {
+@NoArgsConstructor
+public class Product {
     private Integer id;
 
-    private Integer collectId;
-
-    private String url;
-
-    private Integer height;
-
-    private Integer width;
+    private String pname;
 
     private String description;
 
+    private Double price;
+
     private Long createTime;
 
-    private Integer order;
+    private Byte status;
 }

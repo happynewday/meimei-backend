@@ -8,13 +8,13 @@
       <arg column="url" jdbcType="VARCHAR" javaType="java.lang.String" />
       <arg column="height" jdbcType="INTEGER" javaType="java.lang.Integer" />
       <arg column="width" jdbcType="INTEGER" javaType="java.lang.Integer" />
-      <arg column="desc" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="description" jdbcType="VARCHAR" javaType="java.lang.String" />
       <arg column="create_time" jdbcType="BIGINT" javaType="java.lang.Long" />
       <arg column="sequence" jdbcType="INTEGER" javaType="java.lang.Integer" />
     </constructor>
   </resultMap>
   <sql id="Base_Column_List" >
-    id, collect_id, url, height, width, desc, create_time, sequence
+    id, collect_id, url, height, width, description, create_time, sequence
   </sql>
   <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
     select 
@@ -37,10 +37,10 @@
   </delete>
   <insert id="insert" parameterType="com.mm.backend.pojo.PictureDetail" >
     insert into picture_detail (id, collect_id, url, 
-      height, width, desc, 
+      height, width, description,
       create_time, sequence)
     values (#{id,jdbcType=INTEGER}, #{collectId,jdbcType=INTEGER}, #{url,jdbcType=VARCHAR}, 
-      #{height,jdbcType=INTEGER}, #{width,jdbcType=INTEGER}, #{desc,jdbcType=VARCHAR}, 
+      #{height,jdbcType=INTEGER}, #{width,jdbcType=INTEGER}, #{description,jdbcType=VARCHAR},
       #{createTime,jdbcType=BIGINT}, #{sequence,jdbcType=INTEGER})
   </insert>
   <insert id="insertSelective" parameterType="com.mm.backend.pojo.PictureDetail" >
@@ -61,8 +61,8 @@
       <if test="width != null" >
         width,
       </if>
-      <if test="desc != null" >
-        desc,
+      <if test="description != null" >
+        description,
       </if>
       <if test="createTime != null" >
         create_time,
@@ -87,8 +87,8 @@
       <if test="width != null" >
         #{width,jdbcType=INTEGER},
       </if>
-      <if test="desc != null" >
-        #{desc,jdbcType=VARCHAR},
+      <if test="description != null" >
+        #{description,jdbcType=VARCHAR},
       </if>
       <if test="createTime != null" >
         #{createTime,jdbcType=BIGINT},
@@ -113,8 +113,8 @@
       <if test="width != null" >
         width = #{width,jdbcType=INTEGER},
       </if>
-      <if test="desc != null" >
-        desc = #{desc,jdbcType=VARCHAR},
+      <if test="description != null" >
+        description = #{description,jdbcType=VARCHAR},
       </if>
       <if test="createTime != null" >
         create_time = #{createTime,jdbcType=BIGINT},
@@ -131,7 +131,7 @@
       url = #{url,jdbcType=VARCHAR},
       height = #{height,jdbcType=INTEGER},
       width = #{width,jdbcType=INTEGER},
-      desc = #{desc,jdbcType=VARCHAR},
+      description = #{description,jdbcType=VARCHAR},
       create_time = #{createTime,jdbcType=BIGINT},
       sequence = #{sequence,jdbcType=INTEGER}
     where id = #{id,jdbcType=INTEGER}
