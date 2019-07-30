@@ -8,11 +8,20 @@
       <arg column="cover" jdbcType="VARCHAR" javaType="java.lang.String" />
       <arg column="picture_number" jdbcType="INTEGER" javaType="java.lang.Integer" />
       <arg column="actor" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="actor_id" jdbcType="INTEGER" javaType="java.lang.Integer" />
+      <arg column="publisher" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="publish_id" jdbcType="INTEGER" javaType="java.lang.Integer" />
+      <arg column="publish_time" jdbcType="BIGINT" javaType="java.lang.Long" />
+      <arg column="category" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="source" jdbcType="VARCHAR" javaType="java.lang.String" />
       <arg column="create_time" jdbcType="BIGINT" javaType="java.lang.Long" />
+      <arg column="tags" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="status" jdbcType="VARCHAR" javaType="java.lang.String" />
     </constructor>
   </resultMap>
   <sql id="Base_Column_List" >
-    id, collect_name, cover, picture_number, actor, create_time
+    id, collect_name, cover, picture_number, actor, actor_id, publisher, publish_id, 
+    publish_time, category, source, create_time, tags, status
   </sql>
 
   <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
@@ -26,7 +35,6 @@
     select
     <include refid="Base_Column_List" />
     from picture_collect
-    order by id desc
   </select>
 
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
@@ -34,12 +42,16 @@
     where id = #{id,jdbcType=INTEGER}
   </delete>
   <insert id="insert" parameterType="com.mm.backend.pojo.PictureCollect" >
-    insert into picture_collect (id, collect_name, picture_number,
-      actor, create_time
-      )
-    values (#{id,jdbcType=INTEGER}, #{collectName,jdbcType=VARCHAR}, #{pictureNumber,jdbcType=INTEGER},
-      #{actor,jdbcType=VARCHAR}, #{createTime,jdbcType=BIGINT}
-      )
+    insert into picture_collect (id, collect_name, cover, 
+      picture_number, actor, actor_id, 
+      publisher, publish_id, publish_time, 
+      category, source, create_time, 
+      tags, status)
+    values (#{id,jdbcType=INTEGER}, #{collectName,jdbcType=VARCHAR}, #{cover,jdbcType=VARCHAR}, 
+      #{pictureNumber,jdbcType=INTEGER}, #{actor,jdbcType=VARCHAR}, #{actorId,jdbcType=INTEGER}, 
+      #{publisher,jdbcType=VARCHAR}, #{publishId,jdbcType=INTEGER}, #{publishTime,jdbcType=BIGINT}, 
+      #{category,jdbcType=VARCHAR}, #{source,jdbcType=VARCHAR}, #{createTime,jdbcType=BIGINT}, 
+      #{tags,jdbcType=VARCHAR}, #{status,jdbcType=VARCHAR})
   </insert>
   <insert id="insertSelective" parameterType="com.mm.backend.pojo.PictureCollect" >
     insert into picture_collect
@@ -59,8 +71,32 @@
       <if test="actor != null" >
         actor,
       </if>
+      <if test="actorId != null" >
+        actor_id,
+      </if>
+      <if test="publisher != null" >
+        publisher,
+      </if>
+      <if test="publishId != null" >
+        publish_id,
+      </if>
+      <if test="publishTime != null" >
+        publish_time,
+      </if>
+      <if test="category != null" >
+        category,
+      </if>
+      <if test="source != null" >
+        source,
+      </if>
       <if test="createTime != null" >
         create_time,
+      </if>
+      <if test="tags != null" >
+        tags,
+      </if>
+      <if test="status != null" >
+        status,
       </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides="," >
@@ -79,8 +115,32 @@
       <if test="actor != null" >
         #{actor,jdbcType=VARCHAR},
       </if>
+      <if test="actorId != null" >
+        #{actorId,jdbcType=INTEGER},
+      </if>
+      <if test="publisher != null" >
+        #{publisher,jdbcType=VARCHAR},
+      </if>
+      <if test="publishId != null" >
+        #{publishId,jdbcType=INTEGER},
+      </if>
+      <if test="publishTime != null" >
+        #{publishTime,jdbcType=BIGINT},
+      </if>
+      <if test="category != null" >
+        #{category,jdbcType=VARCHAR},
+      </if>
+      <if test="source != null" >
+        #{source,jdbcType=VARCHAR},
+      </if>
       <if test="createTime != null" >
         #{createTime,jdbcType=BIGINT},
+      </if>
+      <if test="tags != null" >
+        #{tags,jdbcType=VARCHAR},
+      </if>
+      <if test="status != null" >
+        #{status,jdbcType=VARCHAR},
       </if>
     </trim>
   </insert>
@@ -91,7 +151,7 @@
         collect_name = #{collectName,jdbcType=VARCHAR},
       </if>
       <if test="cover != null" >
-        cover = #{pictureNumber,jdbcType=VARCHAR},
+        cover = #{cover,jdbcType=VARCHAR},
       </if>
       <if test="pictureNumber != null" >
         picture_number = #{pictureNumber,jdbcType=INTEGER},
@@ -99,8 +159,32 @@
       <if test="actor != null" >
         actor = #{actor,jdbcType=VARCHAR},
       </if>
+      <if test="actorId != null" >
+        actor_id = #{actorId,jdbcType=INTEGER},
+      </if>
+      <if test="publisher != null" >
+        publisher = #{publisher,jdbcType=VARCHAR},
+      </if>
+      <if test="publishId != null" >
+        publish_id = #{publishId,jdbcType=INTEGER},
+      </if>
+      <if test="publishTime != null" >
+        publish_time = #{publishTime,jdbcType=BIGINT},
+      </if>
+      <if test="category != null" >
+        category = #{category,jdbcType=VARCHAR},
+      </if>
+      <if test="source != null" >
+        source = #{source,jdbcType=VARCHAR},
+      </if>
       <if test="createTime != null" >
         create_time = #{createTime,jdbcType=BIGINT},
+      </if>
+      <if test="tags != null" >
+        tags = #{tags,jdbcType=VARCHAR},
+      </if>
+      <if test="status != null" >
+        status = #{status,jdbcType=VARCHAR},
       </if>
     </set>
     where id = #{id,jdbcType=INTEGER}
@@ -111,7 +195,15 @@
       cover = #{cover,jdbcType=VARCHAR},
       picture_number = #{pictureNumber,jdbcType=INTEGER},
       actor = #{actor,jdbcType=VARCHAR},
-      create_time = #{createTime,jdbcType=BIGINT}
+      actor_id = #{actorId,jdbcType=INTEGER},
+      publisher = #{publisher,jdbcType=VARCHAR},
+      publish_id = #{publishId,jdbcType=INTEGER},
+      publish_time = #{publishTime,jdbcType=BIGINT},
+      category = #{category,jdbcType=VARCHAR},
+      source = #{source,jdbcType=VARCHAR},
+      create_time = #{createTime,jdbcType=BIGINT},
+      tags = #{tags,jdbcType=VARCHAR},
+      status = #{status,jdbcType=VARCHAR}
     where id = #{id,jdbcType=INTEGER}
   </update>
 </mapper>

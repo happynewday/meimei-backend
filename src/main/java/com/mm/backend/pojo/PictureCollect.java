@@ -3,10 +3,12 @@ package com.mm.backend.pojo;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 @Data
 @Builder
 @AllArgsConstructor
+@NoArgsConstructor
 public class PictureCollect {
     private Integer id;
 
@@ -18,5 +20,21 @@ public class PictureCollect {
 
     private String actor;
 
+    private Integer actorId;
+
+    private String publisher;
+
+    private Integer publishId;
+
+    private Long publishTime;
+
+    private String category;
+
+    private String source;
+
     private Long createTime;
+
+    private String tags;
+
+    private String status;
 }

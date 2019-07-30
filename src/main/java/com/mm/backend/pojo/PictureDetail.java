@@ -22,5 +22,5 @@ public class PictureDetail {
 
     private Long createTime;
 
-    private Integer order;
+    private Integer sequence;
 }
