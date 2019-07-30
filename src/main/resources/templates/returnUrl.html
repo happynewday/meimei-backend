@@ -1,0 +1,11 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>支付结果页</title>
+</head>
+<body>
+    <div th:if="${payResult==true}">支付成功</div>
+    <div th:if="${payResult==false}">支付失败</div>
+</body>
+</html>

@@ -6,7 +6,6 @@ import com.mm.backend.dao.FavoratePictureMapper;
 import com.mm.backend.dao.PictureCollectMapper;
 import com.mm.backend.dao.PictureDetailMapper;
 import com.mm.backend.dao.UserMapper;
-import com.mm.backend.interceptor.AuthInterceptor;
 import com.mm.backend.pojo.FavoratePicture;
 import com.mm.backend.pojo.PictureCollect;
 import com.mm.backend.pojo.PictureDetail;
@@ -28,7 +27,7 @@ import java.util.List;
  */
 @Service
 public class PictureBackendServiceImpl implements PictureBackendService {
-    private static final Logger logger =  LoggerFactory.getLogger(AuthInterceptor.class);
+    private static final Logger logger =  LoggerFactory.getLogger(PictureBackendServiceImpl.class);
 
     @Autowired
     private PictureCollectMapper pictureCollectMapper;

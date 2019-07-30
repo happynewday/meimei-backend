@@ -25,4 +25,15 @@ public class Order {
     private Long createTime;
 
     private Long payTime;
+
+    public interface status
+    {
+        int CANCELLED = -10;
+        //创建未支付
+        int INITIAL = 0;
+        //已支付
+        int PAYED = 10;
+        //已完成
+        int CLOSED = 20;
+    }
 }
