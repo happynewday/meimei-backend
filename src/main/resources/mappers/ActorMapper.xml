@@ -1,0 +1,194 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.mm.backend.dao.ActorMapper" >
+  <resultMap id="BaseResultMap" type="com.mm.backend.pojo.Actor" >
+    <constructor >
+      <idArg column="id" jdbcType="INTEGER" javaType="java.lang.Integer" />
+      <arg column="aname" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="avatar" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="weibo" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="birth" jdbcType="DATE" javaType="java.util.Date" />
+      <arg column="ht" jdbcType="TINYINT" javaType="java.lang.Byte" />
+      <arg column="wt" jdbcType="TINYINT" javaType="java.lang.Byte" />
+      <arg column="B" jdbcType="TINYINT" javaType="java.lang.Byte" />
+      <arg column="W" jdbcType="TINYINT" javaType="java.lang.Byte" />
+      <arg column="H" jdbcType="TINYINT" javaType="java.lang.Byte" />
+      <arg column="Cup" jdbcType="CHAR" javaType="java.lang.String" />
+      <arg column="homepage" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="create_time" jdbcType="BIGINT" javaType="java.lang.Long" />
+    </constructor>
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, aname, avatar, weibo, birth, ht, wt, B, W, H, Cup, homepage, create_time
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from actor
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+
+  <select id="selectAll" resultMap="BaseResultMap" >
+    select
+    <include refid="Base_Column_List" />
+    from actor
+  </select>
+
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from actor
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.mm.backend.pojo.Actor" >
+    insert into actor (id, aname, avatar, 
+      weibo, birth, ht, wt, 
+      B, W, H, Cup, 
+      homepage, create_time)
+    values (#{id,jdbcType=INTEGER}, #{aname,jdbcType=VARCHAR}, #{avatar,jdbcType=VARCHAR}, 
+      #{weibo,jdbcType=VARCHAR}, #{birth,jdbcType=DATE}, #{ht,jdbcType=TINYINT}, #{wt,jdbcType=TINYINT}, 
+      #{b,jdbcType=TINYINT}, #{w,jdbcType=TINYINT}, #{h,jdbcType=TINYINT}, #{cup,jdbcType=CHAR}, 
+      #{homepage,jdbcType=VARCHAR}, #{createTime,jdbcType=BIGINT})
+  </insert>
+  <insert id="insertSelective" parameterType="com.mm.backend.pojo.Actor" >
+    insert into actor
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="aname != null" >
+        aname,
+      </if>
+      <if test="avatar != null" >
+        avatar,
+      </if>
+      <if test="weibo != null" >
+        weibo,
+      </if>
+      <if test="birth != null" >
+        birth,
+      </if>
+      <if test="ht != null" >
+        ht,
+      </if>
+      <if test="wt != null" >
+        wt,
+      </if>
+      <if test="b != null" >
+        B,
+      </if>
+      <if test="w != null" >
+        W,
+      </if>
+      <if test="h != null" >
+        H,
+      </if>
+      <if test="cup != null" >
+        Cup,
+      </if>
+      <if test="homepage != null" >
+        homepage,
+      </if>
+      <if test="createTime != null" >
+        create_time,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="aname != null" >
+        #{aname,jdbcType=VARCHAR},
+      </if>
+      <if test="avatar != null" >
+        #{avatar,jdbcType=VARCHAR},
+      </if>
+      <if test="weibo != null" >
+        #{weibo,jdbcType=VARCHAR},
+      </if>
+      <if test="birth != null" >
+        #{birth,jdbcType=DATE},
+      </if>
+      <if test="ht != null" >
+        #{ht,jdbcType=TINYINT},
+      </if>
+      <if test="wt != null" >
+        #{wt,jdbcType=TINYINT},
+      </if>
+      <if test="b != null" >
+        #{b,jdbcType=TINYINT},
+      </if>
+      <if test="w != null" >
+        #{w,jdbcType=TINYINT},
+      </if>
+      <if test="h != null" >
+        #{h,jdbcType=TINYINT},
+      </if>
+      <if test="cup != null" >
+        #{cup,jdbcType=CHAR},
+      </if>
+      <if test="homepage != null" >
+        #{homepage,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null" >
+        #{createTime,jdbcType=BIGINT},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.mm.backend.pojo.Actor" >
+    update actor
+    <set >
+      <if test="aname != null" >
+        aname = #{aname,jdbcType=VARCHAR},
+      </if>
+      <if test="avatar != null" >
+        avatar = #{avatar,jdbcType=VARCHAR},
+      </if>
+      <if test="weibo != null" >
+        weibo = #{weibo,jdbcType=VARCHAR},
+      </if>
+      <if test="birth != null" >
+        birth = #{birth,jdbcType=DATE},
+      </if>
+      <if test="ht != null" >
+        ht = #{ht,jdbcType=TINYINT},
+      </if>
+      <if test="wt != null" >
+        wt = #{wt,jdbcType=TINYINT},
+      </if>
+      <if test="b != null" >
+        B = #{b,jdbcType=TINYINT},
+      </if>
+      <if test="w != null" >
+        W = #{w,jdbcType=TINYINT},
+      </if>
+      <if test="h != null" >
+        H = #{h,jdbcType=TINYINT},
+      </if>
+      <if test="cup != null" >
+        Cup = #{cup,jdbcType=CHAR},
+      </if>
+      <if test="homepage != null" >
+        homepage = #{homepage,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null" >
+        create_time = #{createTime,jdbcType=BIGINT},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.mm.backend.pojo.Actor" >
+    update actor
+    set aname = #{aname,jdbcType=VARCHAR},
+      avatar = #{avatar,jdbcType=VARCHAR},
+      weibo = #{weibo,jdbcType=VARCHAR},
+      birth = #{birth,jdbcType=DATE},
+      ht = #{ht,jdbcType=TINYINT},
+      wt = #{wt,jdbcType=TINYINT},
+      B = #{b,jdbcType=TINYINT},
+      W = #{w,jdbcType=TINYINT},
+      H = #{h,jdbcType=TINYINT},
+      Cup = #{cup,jdbcType=CHAR},
+      homepage = #{homepage,jdbcType=VARCHAR},
+      create_time = #{createTime,jdbcType=BIGINT}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>
