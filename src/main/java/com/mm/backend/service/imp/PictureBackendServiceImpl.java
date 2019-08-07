@@ -41,9 +41,14 @@ public class PictureBackendServiceImpl implements PictureBackendService {
     @Autowired
     private UserMapper userMapper;
 
-    public PageInfo<PictureListBackendVo> getPictureCollectList(Integer pageNum, Integer pageSize){
+    public PageInfo<PictureListBackendVo> getPictureCollectList(Integer actorId, Integer pageNum, Integer pageSize){
         PageHelper.startPage(pageNum,pageSize);
-        List<PictureCollect> pictureList = pictureCollectMapper.selectAll();
+        List<PictureCollect> pictureList;
+        if(null != actorId) {
+            pictureList = pictureCollectMapper.selectByActorId(actorId);
+        } else {
+            pictureList = pictureCollectMapper.selectAll();
+        }
         PageInfo pageInfo = new PageInfo(pictureList);
 
         List<PictureListBackendVo> pictureListVos = PictureAssembleHelper.assemblePictureList(pictureList);

@@ -6,6 +6,7 @@ import com.mm.backend.pojo.User;
 import com.mm.backend.redis.RedisService;
 import com.mm.backend.service.UserBackendService;
 import com.mm.backend.vo.UserBackendVo;
+import com.mm.backend.vo.UserVipInfoBackendVo;
 import com.mm.backend.vo.assemble.UserAssembleHelper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -76,5 +77,13 @@ public class UserBackendServiceImpl implements UserBackendService {
         redisService.set(token, user.getId().toString(), 86400 * 30);
 
         return UserAssembleHelper.assembleUserAuthInfo(user);
+    }
+
+    public UserVipInfoBackendVo getUserVipInfo(Integer uid){
+        User user = userMapper.selectByPrimaryKey(uid);
+        UserVipInfoBackendVo userVipInfoBackendVo = UserVipInfoBackendVo.builder()
+                .level(user.getLevel().intValue())
+                .build();
+        return userVipInfoBackendVo;
     }
 }

@@ -50,6 +50,7 @@ public class VideoAssembleHelper {
                 .pictures(videoThumbnailBackendVos)
                 .link(video.getLink())
                 .duration(video.getDuration())
+                .freeDuration(30)
                 .build();
     }
 

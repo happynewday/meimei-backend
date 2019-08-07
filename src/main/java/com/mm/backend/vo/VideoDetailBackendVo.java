@@ -58,8 +58,14 @@ public class VideoDetailBackendVo {
     private String link;
 
     /**
-     * 图片列表
+     * 视频长度
      */
     @ApiModelProperty(value = "视频长度，秒为单位")
     private Integer duration;
+
+    /**
+     * 免费视频长度
+     */
+    @ApiModelProperty(value = "免费视频长度，秒为单位")
+    private Integer freeDuration;
 }

@@ -37,6 +37,13 @@
     from picture_collect
   </select>
 
+  <select id="selectByActorId" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select
+    <include refid="Base_Column_List" />
+    from picture_collect
+    where actor_id = #{actorId,jdbcType=INTEGER}
+  </select>
+
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
     delete from picture_collect
     where id = #{id,jdbcType=INTEGER}

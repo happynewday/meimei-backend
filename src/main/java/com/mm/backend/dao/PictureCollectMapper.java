@@ -17,6 +17,8 @@ public interface PictureCollectMapper {
 
     List<PictureCollect> selectAll();
 
+    List<PictureCollect> selectByActorId(Integer actorId);
+
     int updateByPrimaryKeySelective(PictureCollect record);
 
     int updateByPrimaryKey(PictureCollect record);

@@ -34,10 +34,22 @@ public class PictureCollectDetailBackendVo {
     private String actor;
 
     /**
+     * 演员ID
+     */
+    @ApiModelProperty(value = "演员ID")
+    private Integer actorId;
+
+    /**
      * 图片数量
      */
     @ApiModelProperty(value = "图片数量")
     private Integer number;
+
+    /**
+     * 免费预览图片数量
+     */
+    @ApiModelProperty(value = "免费预览图片数量")
+    private Integer freeNumber;
 
     /**
      * 图片列表

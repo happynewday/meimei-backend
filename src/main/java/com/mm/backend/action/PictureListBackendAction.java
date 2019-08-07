@@ -16,6 +16,12 @@ import javax.validation.constraints.Min;
 @ApiModel(value = "图集列表接口")
 public class PictureListBackendAction {
     /**
+     *  演员ID
+     */
+    @ApiModelProperty(value = "演员ID", example = "1")
+    private  Integer actorId;
+
+    /**
      *  分页码数
      */
     @Min(1)

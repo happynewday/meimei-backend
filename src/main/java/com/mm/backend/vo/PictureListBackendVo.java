@@ -36,6 +36,12 @@ public class PictureListBackendVo {
     private Integer number;
 
     /**
+     * 免费预览图片数量
+     */
+    @ApiModelProperty(value = "免费预览图片数量")
+    private Integer freeNumber;
+
+    /**
      * 图集名称
      */
     @ApiModelProperty(value = "图集名称")
@@ -47,4 +53,9 @@ public class PictureListBackendVo {
     @ApiModelProperty(value = "演员")
     private String actor;
 
+    /**
+     * 演员ID
+     */
+    @ApiModelProperty(value = "演员ID")
+    private Integer actorId;
 }

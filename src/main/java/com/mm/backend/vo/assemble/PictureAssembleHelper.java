@@ -28,8 +28,10 @@ public class PictureAssembleHelper {
                 id(pictureCollect.getId()).
                 cover(pictureCollect.getCover()).
                 number(pictureCollect.getPictureNumber()).
+                freeNumber(6).
                 name(pictureCollect.getCollectName()).
                 actor(pictureCollect.getActor()).
+                actorId(pictureCollect.getActorId()).
                 build();
         return pictureVo;
     }
@@ -43,7 +45,9 @@ public class PictureAssembleHelper {
         return PictureCollectDetailBackendVo.builder().
                 id(pictureCollect.getId()).
                 actor(pictureCollect.getActor()).
+                actorId(pictureCollect.getActorId()).
                 number(pictureCollect.getPictureNumber()).
+                freeNumber(6).
                 pictures(pictures).
                 build();
     }

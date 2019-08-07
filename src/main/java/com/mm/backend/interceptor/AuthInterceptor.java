@@ -37,7 +37,8 @@ public class AuthInterceptor extends HandlerInterceptorAdapter {
         || requestUri.equals("/backend/picture/favorate")
         || requestUri.equals("/backend/order/orderrequest")
         || requestUri.equals("/backend/video/favorate")
-        || requestUri.equals("/backend/video/unfavorate")) {
+        || requestUri.equals("/backend/video/unfavorate")
+        || requestUri.equals("/backend/user/uservipinfo")) {
             if (checkAuthInfo(request)) {
                 return super.preHandle(request, response, handler);
             } else {
