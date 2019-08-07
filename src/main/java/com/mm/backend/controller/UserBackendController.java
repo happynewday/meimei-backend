@@ -69,7 +69,7 @@ public class UserBackendController {
     }
 
     @RequestMapping(value = "/userVipInfo",method = RequestMethod.POST)
-    @ApiOperation(value = "用户信息", notes = "用户信息")
+    @ApiOperation(value = "用户是否VIP", notes = "用户是否VIP")
     RestResult<UserVipInfoBackendVo> userVipInfo() {
         Integer uid = Integer.valueOf(RequestHeaderContext.getInstance().getUserId());
         UserVipInfoBackendVo userVipInfoBackendVo = userBackendService.getUserVipInfo(uid);
