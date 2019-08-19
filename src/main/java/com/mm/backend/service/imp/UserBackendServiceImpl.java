@@ -39,6 +39,7 @@ public class UserBackendServiceImpl implements UserBackendService {
         user = userMapper.selectByUuid(uuid);
         if(null == user) {
             user = User.builder().
+                    uuid(uuid).
                     username(username).
                     password(encodedPassword).
                     accessToken(token).
@@ -48,6 +49,7 @@ public class UserBackendServiceImpl implements UserBackendService {
             if(0 == userMapper.insertSelective(user)){
                 throw new Exception("添加用户失败");
             }
+            user = userMapper.selectByUuid(uuid);
         } else {
             user.setUsername(username);
             user.setPassword(encodedPassword);
@@ -55,8 +57,6 @@ public class UserBackendServiceImpl implements UserBackendService {
             user.setUpdateTime(time);
             userMapper.updateByPrimaryKey(user);
         }
-
-        user = userMapper.selectByPrimaryKey(user.getId());
 
         redisService.set(token, user.getId().toString(), 86400 * 30);
 
@@ -107,6 +107,7 @@ public class UserBackendServiceImpl implements UserBackendService {
                     throw new RuntimeException("添加用户失败");
                 }
             }
+            user = userMapper.selectByUuid(uuid);
         }
         return UserAssembleHelper.assembleUserAuthInfo(user);
     }
