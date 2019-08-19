@@ -17,6 +17,7 @@ public class UserAssembleHelper {
     public static UserBackendVo assembleUserAuthInfo(User user){
         return  UserBackendVo.builder().
                 userId(user.getId()).
+                uuid(user.getUuid()).
                 nickname(user.getNickname()).
                 phone(user.getPhone()).
                 level(user.getLevel().intValue()).

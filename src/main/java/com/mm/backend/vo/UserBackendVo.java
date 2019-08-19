@@ -26,6 +26,12 @@ public class UserBackendVo {
     private Integer userId;
 
     /**
+     * 设备ID
+     */
+    @ApiModelProperty(value = "设备ID")
+    private String uuid;
+
+    /**
      * 昵称
      */
     @ApiModelProperty(value = "昵称")

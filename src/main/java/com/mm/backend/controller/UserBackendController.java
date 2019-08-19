@@ -3,11 +3,10 @@ package com.mm.backend.controller;
 import com.mm.backend.action.LoginBackendAction;
 import com.mm.backend.action.RegistUserBackendAction;
 import com.mm.backend.action.ThirdLoginBackendAction;
+import com.mm.backend.action.user.UserInfoBackendAction;
 import com.mm.backend.common.RestResult;
-import com.mm.backend.interceptor.RequestHeaderContext;
 import com.mm.backend.service.UserBackendService;
 import com.mm.backend.vo.UserBackendVo;
-import com.mm.backend.vo.UserVipInfoBackendVo;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
@@ -39,7 +38,7 @@ public class UserBackendController {
     @ApiOperation(value = "注册", notes = "注册")
     RestResult<UserBackendVo> registUser(@RequestBody @Validated RegistUserBackendAction action, HttpServletResponse response) {
         try {
-            UserBackendVo userInfo = userBackendService.userRegist(action.getUsername(), action.getPassword());
+            UserBackendVo userInfo = userBackendService.userRegist(action.getUuid(), action.getUsername(), action.getPassword());
             response.setHeader("x-auth-token", userInfo.getAccess_token());
             return RestResult.createBySuccess(userInfo);
         } catch (Exception e){
@@ -68,11 +67,17 @@ public class UserBackendController {
         return RestResult.createBySuccess(userInfo);
     }
 
-    @RequestMapping(value = "/userVipInfo",method = RequestMethod.POST)
-    @ApiOperation(value = "用户是否VIP", notes = "用户是否VIP")
-    RestResult<UserVipInfoBackendVo> userVipInfo() {
-        Integer uid = Integer.valueOf(RequestHeaderContext.getInstance().getUserId());
-        UserVipInfoBackendVo userVipInfoBackendVo = userBackendService.getUserVipInfo(uid);
-        return RestResult.createBySuccess(userVipInfoBackendVo);
+    @RequestMapping(value = "/userInfo",method = RequestMethod.POST,
+            headers="Content-Type=application/json;charset=UTF-8", produces="application/json;charset=UTF-8")
+    @ApiOperation(value = "获取用户信息", notes = "获取用户信息")
+    RestResult<UserBackendVo> userInfo(@RequestBody @Validated UserInfoBackendAction action) {
+        Integer uid = action.getUid();
+        String uuid = action.getUuid();
+        try {
+            UserBackendVo userBackendVo = userBackendService.getUserInfo(uid, uuid);
+            return RestResult.createBySuccess(userBackendVo);
+        }catch(RuntimeException e){
+            return RestResult.createByErrorMessage(e.getMessage());
+        }
     }
 }

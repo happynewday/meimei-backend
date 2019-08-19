@@ -6,7 +6,6 @@ import com.mm.backend.pojo.User;
 import com.mm.backend.redis.RedisService;
 import com.mm.backend.service.UserBackendService;
 import com.mm.backend.vo.UserBackendVo;
-import com.mm.backend.vo.UserVipInfoBackendVo;
 import com.mm.backend.vo.assemble.UserAssembleHelper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -25,7 +24,7 @@ public class UserBackendServiceImpl implements UserBackendService {
     @Autowired
     private RedisService redisService;
 
-    public UserBackendVo userRegist(String username, String password) throws Exception{
+    public UserBackendVo userRegist(String uuid, String username, String password) throws Exception{
         User user = userMapper.selectByUsername(username);
         if(null != user){
             throw new Exception("该账号已存在");
@@ -37,15 +36,24 @@ public class UserBackendServiceImpl implements UserBackendService {
         String token = StringUtils.randomString(64);
         long time = System.currentTimeMillis();
 
-        user = User.builder().
-                username(username).
-                password(encodedPassword).
-                accessToken(token).
-                createTime(time).
-                build();
+        user = userMapper.selectByUuid(uuid);
+        if(null == user) {
+            user = User.builder().
+                    username(username).
+                    password(encodedPassword).
+                    accessToken(token).
+                    createTime(time).
+                    build();
 
-        if(0 == userMapper.insertSelective(user)){
-            throw new Exception("添加用户失败");
+            if(0 == userMapper.insertSelective(user)){
+                throw new Exception("添加用户失败");
+            }
+        } else {
+            user.setUsername(username);
+            user.setPassword(encodedPassword);
+            user.setAccessToken(token);
+            user.setUpdateTime(time);
+            userMapper.updateByPrimaryKey(user);
         }
 
         user = userMapper.selectByPrimaryKey(user.getId());
@@ -79,11 +87,27 @@ public class UserBackendServiceImpl implements UserBackendService {
         return UserAssembleHelper.assembleUserAuthInfo(user);
     }
 
-    public UserVipInfoBackendVo getUserVipInfo(Integer uid){
-        User user = userMapper.selectByPrimaryKey(uid);
-        UserVipInfoBackendVo userVipInfoBackendVo = UserVipInfoBackendVo.builder()
-                .level(user.getLevel().intValue())
-                .build();
-        return userVipInfoBackendVo;
+    public UserBackendVo getUserInfo(Integer uid, String uuid) throws RuntimeException{
+        User user;
+        if(null != uid) {
+            user = userMapper.selectByPrimaryKey(uid);
+            if(null == user){
+                throw new RuntimeException("用户不存在");
+            }
+        } else {
+            user = userMapper.selectByUuid(uuid);
+            if(null == user){
+                long time = System.currentTimeMillis();
+                user = User.builder().
+                        uuid(uuid).
+                        createTime(time).
+                        build();
+
+                if(0 == userMapper.insertSelective(user)){
+                    throw new RuntimeException("添加用户失败");
+                }
+            }
+        }
+        return UserAssembleHelper.assembleUserAuthInfo(user);
     }
 }

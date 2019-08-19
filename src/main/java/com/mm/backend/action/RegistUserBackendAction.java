@@ -18,6 +18,13 @@ import javax.validation.constraints.Size;
 @ApiModel(value = "注册用户请求参数信息")
 public class RegistUserBackendAction {
     /**
+     * 设备ID
+     */
+    @NotBlank
+    @ApiModelProperty(value = "设备ID", example = "afje")
+    private String uuid;
+
+    /**
      * 用户名
      */
     @NotBlank
@@ -26,7 +33,7 @@ public class RegistUserBackendAction {
     private String username;
 
     /**
-     * 用户名
+     * 密码
      */
     @NotBlank
     @Size(max = 30)

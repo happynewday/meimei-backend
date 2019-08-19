@@ -4,6 +4,7 @@
   <resultMap id="BaseResultMap" type="com.mm.backend.pojo.User" >
     <constructor >
       <idArg column="id" jdbcType="INTEGER" javaType="java.lang.Integer" />
+      <arg column="uuid" jdbcType="VARCHAR" javaType="java.lang.String" />
       <arg column="username" jdbcType="VARCHAR" javaType="java.lang.String" />
       <arg column="nickname" jdbcType="VARCHAR" javaType="java.lang.String" />
       <arg column="password" jdbcType="VARCHAR" javaType="java.lang.String" />
@@ -21,7 +22,7 @@
     </constructor>
   </resultMap>
   <sql id="Base_Column_List" >
-    id, username, nickname, password, salt, access_token, refresh_token, level, avatar, type, phone,
+    id, uuid, username, nickname, password, salt, access_token, refresh_token, level, avatar, type, phone,
     status, is_delete, create_time, update_time
   </sql>
 
@@ -30,6 +31,13 @@
     <include refid="Base_Column_List" />
     from user
     where id = #{id,jdbcType=INTEGER} and is_delete != 1
+  </select>
+
+  <select id="selectByUuid" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select
+    <include refid="Base_Column_List" />
+    from user
+    where uuid = #{uuid,jdbcType=VARCHAR} and is_delete != 1
   </select>
 
   <select id="selectByUsername" resultMap="BaseResultMap" parameterType="java.lang.String" >
@@ -43,13 +51,14 @@
     delete from user
     where id = #{id,jdbcType=INTEGER}
   </delete>
+
   <insert id="insert" parameterType="com.mm.backend.pojo.User" >
-    insert into user (id, username, nickname, 
+    insert into user (id, uuid, username, nickname,
       password, salt, access_token, 
       refresh_token, level, avatar, type, phone,
       status, is_delete, create_time, 
       update_time)
-    values (#{id,jdbcType=INTEGER}, #{username,jdbcType=VARCHAR}, #{nickname,jdbcType=VARCHAR}, 
+    values (#{id,jdbcType=INTEGER}, #{uuid,jdbcType=VARCHAR}, #{username,jdbcType=VARCHAR}, #{nickname,jdbcType=VARCHAR},
       #{password,jdbcType=VARCHAR}, #{salt,jdbcType=VARCHAR}, #{accessToken,jdbcType=VARCHAR}, 
       #{refreshToken,jdbcType=VARCHAR}, #{level,jdbcType=TINYINT}, #{avatar,jdbcType=VARCHAR}, #{type,jdbcType=TINYINT}, #{phone,jdbcType=VARCHAR},
       #{status,jdbcType=BIT}, #{isDelete,jdbcType=BIT}, #{createTime,jdbcType=BIGINT}, 
@@ -60,6 +69,9 @@
     <trim prefix="(" suffix=")" suffixOverrides="," >
       <if test="id != null" >
         id,
+      </if>
+      <if test="uuid != null" >
+        uuid,
       </if>
       <if test="username != null" >
         username,
@@ -108,6 +120,9 @@
       <if test="id != null" >
         #{id,jdbcType=INTEGER},
       </if>
+      <if test="uuid != null" >
+        #{uuid,jdbcType=VARCHAR},
+      </if>
       <if test="username != null" >
         #{username,jdbcType=VARCHAR},
       </if>
@@ -155,6 +170,9 @@
   <update id="updateByPrimaryKeySelective" parameterType="com.mm.backend.pojo.User" >
     update user
     <set >
+      <if test="uuid != null" >
+        uuid = #{uuid,jdbcType=VARCHAR},
+      </if>
       <if test="username != null" >
         username = #{username,jdbcType=VARCHAR},
       </if>
@@ -202,7 +220,8 @@
   </update>
   <update id="updateByPrimaryKey" parameterType="com.mm.backend.pojo.User" >
     update user
-    set username = #{username,jdbcType=VARCHAR},
+    set uuid = #{uuid,jdbcType=VARCHAR},
+      username = #{username,jdbcType=VARCHAR},
       nickname = #{nickname,jdbcType=VARCHAR},
       password = #{password,jdbcType=VARCHAR},
       salt = #{salt,jdbcType=VARCHAR},
