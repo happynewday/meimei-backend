@@ -19,6 +19,27 @@
       <arg column="status" jdbcType="VARCHAR" javaType="java.lang.String" />
     </constructor>
   </resultMap>
+
+  <resultMap id="PictureCollectWithActor" type="com.mm.backend.pojo.PictureCollectWithActor" >
+    <constructor >
+      <arg column="id" jdbcType="INTEGER" javaType="java.lang.Integer" />
+      <arg column="collect_name" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="cover" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="picture_number" jdbcType="INTEGER" javaType="java.lang.Integer" />
+      <arg column="actor" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="actor_id" jdbcType="INTEGER" javaType="java.lang.Integer" />
+      <arg column="actor_avatar" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="publisher" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="publish_id" jdbcType="INTEGER" javaType="java.lang.Integer" />
+      <arg column="publish_time" jdbcType="BIGINT" javaType="java.lang.Long" />
+      <arg column="category" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="source" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="create_time" jdbcType="BIGINT" javaType="java.lang.Long" />
+      <arg column="tags" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="status" jdbcType="VARCHAR" javaType="java.lang.String" />
+    </constructor>
+  </resultMap>
+
   <sql id="Base_Column_List" >
     id, collect_name, cover, picture_number, actor, actor_id, publisher, publish_id, 
     publish_time, category, source, create_time, tags, status
@@ -31,17 +52,15 @@
     where id = #{id,jdbcType=INTEGER}
   </select>
 
-  <select id="selectAll" resultMap="BaseResultMap">
-    select
-    <include refid="Base_Column_List" />
-    from picture_collect
+  <select id="selectAll" resultMap="PictureCollectWithActor">
+    select a.*, b.avatar as actor_avatar
+    from picture_collect as a left join actor as b on a.`actor_id` =b.`id`
   </select>
 
-  <select id="selectByActorId" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
-    select
-    <include refid="Base_Column_List" />
-    from picture_collect
-    where actor_id = #{actorId,jdbcType=INTEGER}
+  <select id="selectByActorId" resultMap="PictureCollectWithActor" parameterType="java.lang.Integer" >
+    select a.*, b.avatar as actor_avatar
+    from picture_collect as a left join actor as b on a.`actor_id` =b.`id`
+    where a.actor_id = #{actorId,jdbcType=INTEGER}
   </select>
 
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >

@@ -40,6 +40,12 @@ public class PictureCollectDetailBackendVo {
     private Integer actorId;
 
     /**
+     * 演员头像
+     */
+    @ApiModelProperty(value = "演员头像")
+    private String avatar;
+
+    /**
      * 图片数量
      */
     @ApiModelProperty(value = "图片数量")

@@ -1,6 +1,7 @@
 package com.mm.backend.dao;
 
 import com.mm.backend.pojo.PictureCollect;
+import com.mm.backend.pojo.PictureCollectWithActor;
 import org.apache.ibatis.annotations.Mapper;
 
 import java.util.List;
@@ -15,9 +16,9 @@ public interface PictureCollectMapper {
 
     PictureCollect selectByPrimaryKey(Integer id);
 
-    List<PictureCollect> selectAll();
+    List<PictureCollectWithActor> selectAll();
 
-    List<PictureCollect> selectByActorId(Integer actorId);
+    List<PictureCollectWithActor> selectByActorId(Integer actorId);
 
     int updateByPrimaryKeySelective(PictureCollect record);
 
