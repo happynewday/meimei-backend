@@ -8,12 +8,28 @@
       <arg column="duration" jdbcType="INTEGER" javaType="java.lang.Integer" />
       <arg column="cover" jdbcType="VARCHAR" javaType="java.lang.String" />
       <arg column="actor" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="actor_id" jdbcType="INTEGER" javaType="java.lang.Integer" />
       <arg column="link" jdbcType="VARCHAR" javaType="java.lang.String" />
       <arg column="create_time" jdbcType="BIGINT" javaType="java.lang.Long" />
     </constructor>
   </resultMap>
+
+  <resultMap id="VideoCollectWithActor" type="com.mm.backend.pojo.VideoCollectWithActor" >
+    <constructor >
+      <arg column="id" jdbcType="INTEGER" javaType="java.lang.Integer" />
+      <arg column="name" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="duration" jdbcType="INTEGER" javaType="java.lang.Integer" />
+      <arg column="cover" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="actor" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="actor_id" jdbcType="INTEGER" javaType="java.lang.Integer" />
+      <arg column="avatar" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="link" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="create_time" jdbcType="BIGINT" javaType="java.lang.Long" />
+    </constructor>
+  </resultMap>
+
   <sql id="Base_Column_List" >
-    id, name, duration, cover, actor, link, create_time
+    id, name, duration, cover, actor, actor_id, link, create_time
   </sql>
   <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
     select 
@@ -22,11 +38,11 @@
     where id = #{id,jdbcType=INTEGER}
   </select>
 
-  <select id="selectAll" resultMap="BaseResultMap" >
+  <select id="selectAll" resultMap="VideoCollectWithActor" >
     select
-    <include refid="Base_Column_List" />
-    from video
-    order by id desc
+    a.*, b.avatar as avatar
+    from video as a left join actor as b on a.`actor_id` =b.`id`
+    order by a.id desc
   </select>
 
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
@@ -59,6 +75,9 @@
       <if test="actor != null" >
         actor,
       </if>
+      <if test="actorId != null" >
+        actor_id,
+      </if>
       <if test="link != null" >
         link,
       </if>
@@ -81,6 +100,9 @@
       </if>
       <if test="actor != null" >
         #{actor,jdbcType=VARCHAR},
+      </if>
+      <if test="actorId != null" >
+        #{actorId,jdbcType=INTEGER},
       </if>
       <if test="link != null" >
         #{link,jdbcType=VARCHAR},
@@ -105,6 +127,9 @@
       <if test="actor != null" >
         actor = #{actor,jdbcType=VARCHAR},
       </if>
+      <if test="actorId != null" >
+        actor_id = #{actorId,jdbcType=INTEGER},
+      </if>
       <if test="link != null" >
         link = #{link,jdbcType=VARCHAR},
       </if>
@@ -120,6 +145,7 @@
       duration = #{duration,jdbcType=INTEGER},
       cover = #{cover,jdbcType=VARCHAR},
       actor = #{actor,jdbcType=VARCHAR},
+      actor_id = #{actorId,jdbcType=INTEGER},
       link = #{link,jdbcType=VARCHAR},
       create_time = #{createTime,jdbcType=BIGINT}
     where id = #{id,jdbcType=INTEGER}

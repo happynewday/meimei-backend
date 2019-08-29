@@ -2,12 +2,12 @@ package com.mm.backend.service.imp;
 
 import com.github.pagehelper.PageHelper;
 import com.mm.backend.common.PageInfo;
+import com.mm.backend.common.StringUtils;
+import com.mm.backend.dao.ActorMapper;
 import com.mm.backend.dao.FavorateVideoMapper;
 import com.mm.backend.dao.VideoMapper;
 import com.mm.backend.dao.VideoThumbmailMapper;
-import com.mm.backend.pojo.FavorateVideo;
-import com.mm.backend.pojo.Video;
-import com.mm.backend.pojo.VideoThumbmail;
+import com.mm.backend.pojo.*;
 import com.mm.backend.service.VideoBackendService;
 import com.mm.backend.vo.VideoDetailBackendVo;
 import com.mm.backend.vo.VideoListBackendVo;
@@ -33,9 +33,12 @@ public class VideoBackendServiceImpl implements VideoBackendService {
     @Autowired
     FavorateVideoMapper favorateVideoMapper;
 
+    @Autowired
+    ActorMapper actorMapper;
+
     public PageInfo<VideoListBackendVo> getVideoList(Integer pageNum, Integer pageSize){
         PageHelper.startPage(pageNum,pageSize);
-        List<Video> videos = videoMapper.selectAll();
+        List<VideoCollectWithActor> videos = videoMapper.selectAll();
         PageInfo pageInfo = new PageInfo(videos);
 
         List<VideoListBackendVo> videoListVos = VideoAssembleHelper.assembleVideoList(videos);
@@ -50,7 +53,14 @@ public class VideoBackendServiceImpl implements VideoBackendService {
         }
 
         List<VideoThumbmail> videoThumbmails = videoThumbmailMapper.selectByVideoId(videoId);
-        return VideoAssembleHelper.assembleVideoDetail(video, videoThumbmails);
+
+        Actor actor;
+        if(StringUtils.isNotBlank(video.getActorId())){
+            actor = actorMapper.selectByPrimaryKey(video.getActorId());
+        } else {
+            actor = null;
+        }
+        return VideoAssembleHelper.assembleVideoDetail(video, videoThumbmails, actor);
     }
 
     public boolean addFavorateVideo(Integer userId, Integer videoId){

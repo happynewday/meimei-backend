@@ -36,10 +36,22 @@ public class VideoListBackendVo {
     private String name;
 
     /**
+     * 演员Id
+     */
+    @ApiModelProperty(value = "演员Id")
+    private Integer actorId;
+
+    /**
      * 演员
      */
     @ApiModelProperty(value = "演员")
     private String actor;
+
+    /**
+     * 演员头像
+     */
+    @ApiModelProperty(value = "演员头像")
+    private String avatar;
 
     /**
      * 时长

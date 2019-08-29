@@ -1,6 +1,7 @@
 package com.mm.backend.dao;
 
 import com.mm.backend.pojo.Video;
+import com.mm.backend.pojo.VideoCollectWithActor;
 import org.apache.ibatis.annotations.Mapper;
 
 import java.util.List;
@@ -15,7 +16,7 @@ public interface VideoMapper {
 
     Video selectByPrimaryKey(Integer id);
 
-    List<Video> selectAll();
+    List<VideoCollectWithActor> selectAll();
 
     int updateByPrimaryKeySelective(Video record);
 

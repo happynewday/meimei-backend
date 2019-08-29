@@ -28,10 +28,22 @@ public class VideoDetailBackendVo {
     private Integer id;
 
     /**
+     * 演员ID
+     */
+    @ApiModelProperty(value = "演员ID")
+    private Integer actorId;
+
+    /**
      * 演员
      */
     @ApiModelProperty(value = "演员")
     private String actor;
+
+    /**
+     * 演员头像
+     */
+    @ApiModelProperty(value = "演员头像")
+    private String avatar;
 
     /**
      * 封面

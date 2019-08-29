@@ -1,8 +1,6 @@
 package com.mm.backend.vo.assemble;
 
-import com.mm.backend.pojo.PictureCollect;
-import com.mm.backend.pojo.Video;
-import com.mm.backend.pojo.VideoThumbmail;
+import com.mm.backend.pojo.*;
 import com.mm.backend.vo.PictureListBackendVo;
 import com.mm.backend.vo.VideoDetailBackendVo;
 import com.mm.backend.vo.VideoListBackendVo;
@@ -17,26 +15,28 @@ import java.util.List;
  * @Date 2019/7/9 11:15
  */
 public class VideoAssembleHelper {
-    public static List<VideoListBackendVo> assembleVideoList(List<Video> videoList){
+    public static List<VideoListBackendVo> assembleVideoList(List<VideoCollectWithActor> videoList){
         List<VideoListBackendVo> videoListVos = new ArrayList<>();
-        for(Video video: videoList){
+        for(VideoCollectWithActor video: videoList){
             videoListVos.add(assembleVideo(video));
         }
         return videoListVos;
     }
 
-    public static VideoListBackendVo assembleVideo(Video video){
+    public static VideoListBackendVo assembleVideo(VideoCollectWithActor video){
         return  VideoListBackendVo.builder()
                 .id(video.getId())
                 .cover(video.getCover())
                 .name(video.getName())
+                .actorId(video.getActorId())
                 .actor(video.getActor())
+                .avatar(video.getActorAvatar())
                 .duration(video.getDuration())
                 .link(video.getLink())
                 .build();
     }
 
-    public static VideoDetailBackendVo assembleVideoDetail(Video video, List<VideoThumbmail> videoThumbmails){
+    public static VideoDetailBackendVo assembleVideoDetail(Video video, List<VideoThumbmail> videoThumbmails, Actor actor){
         List<VideoThumbnailBackendVo> videoThumbnailBackendVos = new ArrayList<>();
         for(VideoThumbmail videoThumbmail: videoThumbmails){
             videoThumbnailBackendVos.add(assembleVideoThumbnail(videoThumbmail));
@@ -44,7 +44,9 @@ public class VideoAssembleHelper {
 
         return VideoDetailBackendVo.builder()
                 .id(video.getId())
+                .actorId(video.getActorId())
                 .actor(video.getActor())
+                .avatar(null == actor ? "" : actor.getAvatar())
                 .cover(video.getCover())
                 .number(videoThumbmails.size())
                 .pictures(videoThumbnailBackendVos)
