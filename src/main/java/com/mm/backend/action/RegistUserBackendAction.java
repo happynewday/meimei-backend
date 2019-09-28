@@ -20,7 +20,6 @@ public class RegistUserBackendAction {
     /**
      * 设备ID
      */
-    @NotBlank
     @ApiModelProperty(value = "设备ID", example = "afje")
     private String uuid;
 
