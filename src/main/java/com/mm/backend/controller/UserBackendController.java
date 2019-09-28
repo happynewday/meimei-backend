@@ -51,7 +51,7 @@ public class UserBackendController {
     @ApiOperation(value = "登录", notes = "登录")
     RestResult<UserBackendVo> login(@RequestBody @Validated LoginBackendAction action, HttpServletResponse response) {
         try {
-            UserBackendVo userInfo = userBackendService.login(action.getUsername(), action.getPassword());
+            UserBackendVo userInfo = userBackendService.login(action.getUsername(), action.getPassword(), action.getUuid());
             response.setHeader("x-auth-token", userInfo.getAccess_token());
             return RestResult.createBySuccess(userInfo);
         } catch (Exception e){

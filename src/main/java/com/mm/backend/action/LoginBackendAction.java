@@ -25,10 +25,16 @@ public class LoginBackendAction {
     private String username;
 
     /**
-     * 用户名
+     * 密码
      */
     @NotBlank
     @Size(max = 30)
     @ApiModelProperty(value = "密码", example = "123456")
     private String password;
+
+    /**
+     * uuid
+     */
+    @ApiModelProperty(value = "uuid", example = "abcd123")
+    private String uuid;
 }

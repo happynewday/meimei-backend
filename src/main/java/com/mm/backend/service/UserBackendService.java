@@ -10,7 +10,7 @@ import com.mm.backend.vo.UserBackendVo;
 public interface UserBackendService {
     UserBackendVo userRegist(String uuid, String username, String password) throws Exception;
 
-    UserBackendVo login(String username, String password) throws Exception;
+    UserBackendVo login(String username, String password, String uuid) throws Exception;
 
     UserBackendVo getUserInfo(Integer uid, String uuid) throws RuntimeException;
 }

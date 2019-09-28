@@ -36,34 +36,25 @@ public class UserBackendServiceImpl implements UserBackendService {
         String token = StringUtils.randomString(64);
         long time = System.currentTimeMillis();
 
-        user = userMapper.selectByUuid(uuid);
-        if(null == user) {
-            user = User.builder().
-                    uuid(uuid).
-                    username(username).
-                    password(encodedPassword).
-                    accessToken(token).
-                    createTime(time).
-                    build();
+        user = User.builder().
+                uuid(uuid).
+                username(username).
+                password(encodedPassword).
+                accessToken(token).
+                createTime(time).
+                build();
 
-            if(0 == userMapper.insertSelective(user)){
-                throw new Exception("添加用户失败");
-            }
-            user = userMapper.selectByUuid(uuid);
-        } else {
-            user.setUsername(username);
-            user.setPassword(encodedPassword);
-            user.setAccessToken(token);
-            user.setUpdateTime(time);
-            userMapper.updateByPrimaryKey(user);
+        if(0 == userMapper.insertSelective(user)){
+            throw new Exception("添加用户失败");
         }
+        user = userMapper.selectByUuid(uuid);
 
         redisService.set(token, user.getId().toString(), 86400 * 30);
 
         return UserAssembleHelper.assembleUserAuthInfo(user);
     }
 
-    public UserBackendVo login(String username, String password) throws Exception {
+    public UserBackendVo login(String username, String password, String uuid) throws Exception {
         User user = userMapper.selectByUsername(username);
         if(null == user){
             throw new Exception("用户不存在");
@@ -72,6 +63,13 @@ public class UserBackendServiceImpl implements UserBackendService {
         BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
         if(!encoder.matches(password, user.getPassword())){
             throw new Exception("密码错误");
+        }
+
+        //绑定账号和uuid
+        if(StringUtils.isNotBlank(uuid)){
+            if(StringUtils.isBlank(user.getUuid())){
+                user.setUuid(uuid);
+            }
         }
 
         //生成用户token
