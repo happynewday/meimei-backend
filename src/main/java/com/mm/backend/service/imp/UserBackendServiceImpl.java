@@ -47,7 +47,7 @@ public class UserBackendServiceImpl implements UserBackendService {
         if(0 == userMapper.insertSelective(user)){
             throw new Exception("添加用户失败");
         }
-        user = userMapper.selectByUuid(uuid);
+        user = userMapper.selectByUsername(username);
 
         redisService.set(token, user.getId().toString(), 86400 * 30);
 
