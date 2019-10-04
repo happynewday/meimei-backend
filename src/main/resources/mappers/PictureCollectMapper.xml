@@ -63,6 +63,12 @@
     where a.actor_id = #{actorId,jdbcType=INTEGER}
   </select>
 
+  <select id="selectByTag" resultMap="PictureCollectWithActor" parameterType="java.lang.String" >
+    select a.*, b.avatar as actor_avatar
+    from picture_collect as a left join actor as b on a.`actor_id` =b.`id`
+    where a.actor_id = #{actorId,jdbcType=INTEGER}
+  </select>
+
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
     delete from picture_collect
     where id = #{id,jdbcType=INTEGER}

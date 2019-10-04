@@ -18,6 +18,4 @@ public interface TagPictureMapper {
     int updateByPrimaryKeySelective(TagPicture record);
 
     int updateByPrimaryKey(TagPicture record);
-
-    List<String> selectTopTag();
 }
