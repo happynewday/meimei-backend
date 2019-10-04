@@ -24,7 +24,7 @@ public class UserBackendServiceImpl implements UserBackendService {
     @Autowired
     private RedisService redisService;
 
-    public UserBackendVo userRegist(String uuid, String username, String password) throws Exception{
+    public UserBackendVo    userRegist(String uuid, String username, String password) throws Exception{
         User user = userMapper.selectByUsername(username);
         if(null != user){
             throw new Exception("该账号已存在");

@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.mm.backend.dao.TagPictureMapper" >
+  <resultMap id="BaseResultMap" type="com.mm.backend.pojo.TagPicture" >
+    <constructor >
+      <idArg column="id" jdbcType="INTEGER" javaType="java.lang.Integer" />
+      <arg column="tag" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="picture_id" jdbcType="INTEGER" javaType="java.lang.Integer" />
+    </constructor>
+  </resultMap>
+
+  <sql id="Base_Column_List" >
+    id, tag, picture_id
+  </sql>
+
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from tag_picture
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from tag_picture
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+
+  <insert id="insert" parameterType="com.mm.backend.pojo.TagPicture" >
+    insert into tag_picture (id, tag, picture_id
+      )
+    values (#{id,jdbcType=INTEGER}, #{tag,jdbcType=VARCHAR}, #{pictureId,jdbcType=INTEGER}
+      )
+  </insert>
+
+  <insert id="insertSelective" parameterType="com.mm.backend.pojo.TagPicture" >
+    insert into tag_picture
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="tag != null" >
+        tag,
+      </if>
+      <if test="pictureId != null" >
+        picture_id,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="tag != null" >
+        #{tag,jdbcType=VARCHAR},
+      </if>
+      <if test="pictureId != null" >
+        #{pictureId,jdbcType=INTEGER},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.mm.backend.pojo.TagPicture" >
+    update tag_picture
+    <set >
+      <if test="tag != null" >
+        tag = #{tag,jdbcType=VARCHAR},
+      </if>
+      <if test="pictureId != null" >
+        picture_id = #{pictureId,jdbcType=INTEGER},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.mm.backend.pojo.TagPicture" >
+    update tag_picture
+    set tag = #{tag,jdbcType=VARCHAR},
+      picture_id = #{pictureId,jdbcType=INTEGER}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>
