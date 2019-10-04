@@ -8,25 +8,45 @@
       <arg column="picture_id" jdbcType="INTEGER" javaType="java.lang.Integer" />
     </constructor>
   </resultMap>
+
+  <resultMap id="DistinctTag" type="com.mm.backend.pojo.TagPicture" >
+    <constructor >
+      <arg column="tag" jdbcType="VARCHAR" javaType="java.lang.String" />
+    </constructor>
+  </resultMap>
+
   <sql id="Base_Column_List" >
     id, tag, picture_id
   </sql>
+
   <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
     select 
     <include refid="Base_Column_List" />
     from tag_picture
     where id = #{id,jdbcType=INTEGER}
   </select>
+
+  <select id="selectTopTag" resultMap="DistinctTag" >
+    select
+    tag
+    from tag_picture
+    group by tag
+    order by count(*) desc
+    limit 50
+  </select>
+
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
     delete from tag_picture
     where id = #{id,jdbcType=INTEGER}
   </delete>
+
   <insert id="insert" parameterType="com.mm.backend.pojo.TagPicture" >
     insert into tag_picture (id, tag, picture_id
       )
     values (#{id,jdbcType=INTEGER}, #{tag,jdbcType=VARCHAR}, #{pictureId,jdbcType=INTEGER}
       )
   </insert>
+
   <insert id="insertSelective" parameterType="com.mm.backend.pojo.TagPicture" >
     insert into tag_picture
     <trim prefix="(" suffix=")" suffixOverrides="," >
