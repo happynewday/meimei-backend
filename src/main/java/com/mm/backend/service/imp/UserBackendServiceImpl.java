@@ -30,6 +30,10 @@ public class UserBackendServiceImpl implements UserBackendService {
             throw new Exception("该账号已存在");
         }
 
+        if(StringUtils.isBlank(uuid)){
+            uuid = "";
+        }
+
         BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
         String encodedPassword =  passwordEncoder.encode(password);
         //String encodedPassword = password;
