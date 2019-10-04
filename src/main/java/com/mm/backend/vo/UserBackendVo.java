@@ -32,6 +32,12 @@ public class UserBackendVo {
     private String uuid;
 
     /**
+     * 登录名
+     */
+    @ApiModelProperty(value = "登录名")
+    private String username;
+
+    /**
      * 昵称
      */
     @ApiModelProperty(value = "昵称")

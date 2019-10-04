@@ -18,6 +18,7 @@ public class UserAssembleHelper {
         return  UserBackendVo.builder().
                 userId(user.getId()).
                 uuid(user.getUuid()).
+                username(user.getUsername()).
                 nickname(user.getNickname()).
                 phone(user.getPhone()).
                 level(user.getLevel().intValue()).
