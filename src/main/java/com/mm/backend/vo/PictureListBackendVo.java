@@ -48,6 +48,12 @@ public class PictureListBackendVo {
     private String name;
 
     /**
+     * 演员信息
+     */
+    @ApiModelProperty(value = "演员信息")
+    private ActorDetailBackendVo actorInfo;
+
+    /**
      * 演员
      */
     @ApiModelProperty(value = "演员")

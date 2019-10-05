@@ -1,9 +1,7 @@
 package com.mm.backend.vo.assemble;
 
-import com.mm.backend.pojo.Actor;
-import com.mm.backend.pojo.PictureCollect;
-import com.mm.backend.pojo.PictureCollectWithActor;
-import com.mm.backend.pojo.PictureDetail;
+import com.mm.backend.common.StringUtils;
+import com.mm.backend.pojo.*;
 import com.mm.backend.vo.PictureCollectDetailBackendVo;
 import com.mm.backend.vo.PictureListBackendVo;
 import com.mm.backend.vo.SinglePictureVo;
@@ -39,6 +37,19 @@ public class PictureAssembleHelper {
         return pictureVo;
     }
 
+    public static PictureListBackendVo assemblePictureNew(PictureAlbum pictureAlbum){
+        PictureListBackendVo pictureVo = PictureListBackendVo.builder().
+                id(pictureAlbum.getId()).
+                cover(pictureAlbum.getCover()).
+                number(pictureAlbum.getPictureNumber()).
+                freeNumber(6).
+                name(pictureAlbum.getCollectName()).
+                actor(pictureAlbum.getActor()).
+                actorId(pictureAlbum.getActorId()).
+                build();
+        return pictureVo;
+    }
+
     public static PictureCollectDetailBackendVo assemblePictureDetails(PictureCollect pictureCollect, List<PictureDetail> pictureDetails, Actor actor) {
         List<SinglePictureVo> pictures = new ArrayList<>();
         for(PictureDetail picture: pictureDetails){
@@ -51,6 +62,21 @@ public class PictureAssembleHelper {
                 actorId(pictureCollect.getActorId()).
                 avatar(null == actor ? "" : actor.getAvatar()).
                 number(pictureCollect.getPictureNumber()).
+                freeNumber(6).
+                build();
+    }
+
+    public static PictureCollectDetailBackendVo assemblePictureDetailsNew(PictureAlbum pictureAlbum) {
+        String[] pictures = new String[0];
+        if(StringUtils.isNotBlank(pictureAlbum.getImgs())) {
+            pictures = pictureAlbum.getImgs().split(",");
+        }
+
+        return PictureCollectDetailBackendVo.builder().
+                id(pictureAlbum.getId()).
+                actor(pictureAlbum.getActor()).
+                actorId(pictureAlbum.getActorId()).
+                number(pictureAlbum.getPictureNumber()).
                 freeNumber(6).
                 pictures(pictures).
                 build();

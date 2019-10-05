@@ -1,0 +1,306 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.mm.backend.dao.PictureAlbumMapper" >
+  <resultMap id="BaseResultMap" type="com.mm.backend.pojo.PictureAlbum" >
+    <constructor >
+      <idArg column="id" jdbcType="INTEGER" javaType="java.lang.Integer" />
+      <arg column="collect_name" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="cover" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="picture_number" jdbcType="INTEGER" javaType="java.lang.Integer" />
+      <arg column="actor" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="actor_id" jdbcType="INTEGER" javaType="java.lang.Integer" />
+      <arg column="publisher" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="publish_id" jdbcType="INTEGER" javaType="java.lang.Integer" />
+      <arg column="publish_time" jdbcType="BIGINT" javaType="java.lang.Long" />
+      <arg column="category" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="source" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="create_time" jdbcType="BIGINT" javaType="java.lang.Long" />
+      <arg column="free_imgs" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="source_imgs" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="tags" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="status" jdbcType="VARCHAR" javaType="java.lang.String" />
+    </constructor>
+  </resultMap>
+  <resultMap id="ResultMapWithBLOBs" type="com.mm.backend.pojo.PictureAlbum" >
+    <constructor >
+      <idArg column="id" jdbcType="INTEGER" javaType="java.lang.Integer" />
+      <arg column="collect_name" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="cover" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="picture_number" jdbcType="INTEGER" javaType="java.lang.Integer" />
+      <arg column="actor" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="actor_id" jdbcType="INTEGER" javaType="java.lang.Integer" />
+      <arg column="publisher" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="publish_id" jdbcType="INTEGER" javaType="java.lang.Integer" />
+      <arg column="publish_time" jdbcType="BIGINT" javaType="java.lang.Long" />
+      <arg column="category" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="source" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="create_time" jdbcType="BIGINT" javaType="java.lang.Long" />
+      <arg column="free_imgs" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="source_imgs" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="tags" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="status" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="imgs" jdbcType="LONGVARCHAR" javaType="java.lang.String" />
+    </constructor>
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, collect_name, cover, picture_number, actor, actor_id, publisher, publish_id, 
+    publish_time, category, source, create_time, free_imgs, source_imgs, tags, status
+  </sql>
+  <sql id="Blob_Column_List" >
+    imgs
+  </sql>
+
+  <select id="selectAll" resultMap="ResultMapWithBLOBs">
+    select
+    <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+    from picture_album
+  </select>
+
+  <select id="selectByActorId" resultMap="ResultMapWithBLOBs"  parameterType="java.lang.Integer" >
+    select
+    <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+    from picture_album
+    where actor_id = #{actorId,jdbcType=INTEGER}
+  </select>
+
+  <select id="selectByTag" resultMap="ResultMapWithBLOBs"  parameterType="java.lang.String" >
+    select
+    b.*
+    from tag_picture as a left join picture_album as b
+    on a.picture_id = b.id
+    where a.tag = #{tag,jdbcType=VARCHAR}
+  </select>
+
+  <select id="selectByPrimaryKey" resultMap="ResultMapWithBLOBs" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+    from picture_album
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from picture_album
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.mm.backend.pojo.PictureAlbum" >
+    insert into picture_album (id, collect_name, cover, 
+      picture_number, actor, actor_id, 
+      publisher, publish_id, publish_time, 
+      category, source, create_time, 
+      free_imgs, source_imgs, tags, 
+      status, imgs)
+    values (#{id,jdbcType=INTEGER}, #{collectName,jdbcType=VARCHAR}, #{cover,jdbcType=VARCHAR}, 
+      #{pictureNumber,jdbcType=INTEGER}, #{actor,jdbcType=VARCHAR}, #{actorId,jdbcType=INTEGER}, 
+      #{publisher,jdbcType=VARCHAR}, #{publishId,jdbcType=INTEGER}, #{publishTime,jdbcType=BIGINT}, 
+      #{category,jdbcType=VARCHAR}, #{source,jdbcType=VARCHAR}, #{createTime,jdbcType=BIGINT}, 
+      #{freeImgs,jdbcType=VARCHAR}, #{sourceImgs,jdbcType=VARCHAR}, #{tags,jdbcType=VARCHAR}, 
+      #{status,jdbcType=VARCHAR}, #{imgs,jdbcType=LONGVARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.mm.backend.pojo.PictureAlbum" >
+    insert into picture_album
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="collectName != null" >
+        collect_name,
+      </if>
+      <if test="cover != null" >
+        cover,
+      </if>
+      <if test="pictureNumber != null" >
+        picture_number,
+      </if>
+      <if test="actor != null" >
+        actor,
+      </if>
+      <if test="actorId != null" >
+        actor_id,
+      </if>
+      <if test="publisher != null" >
+        publisher,
+      </if>
+      <if test="publishId != null" >
+        publish_id,
+      </if>
+      <if test="publishTime != null" >
+        publish_time,
+      </if>
+      <if test="category != null" >
+        category,
+      </if>
+      <if test="source != null" >
+        source,
+      </if>
+      <if test="createTime != null" >
+        create_time,
+      </if>
+      <if test="freeImgs != null" >
+        free_imgs,
+      </if>
+      <if test="sourceImgs != null" >
+        source_imgs,
+      </if>
+      <if test="tags != null" >
+        tags,
+      </if>
+      <if test="status != null" >
+        status,
+      </if>
+      <if test="imgs != null" >
+        imgs,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="collectName != null" >
+        #{collectName,jdbcType=VARCHAR},
+      </if>
+      <if test="cover != null" >
+        #{cover,jdbcType=VARCHAR},
+      </if>
+      <if test="pictureNumber != null" >
+        #{pictureNumber,jdbcType=INTEGER},
+      </if>
+      <if test="actor != null" >
+        #{actor,jdbcType=VARCHAR},
+      </if>
+      <if test="actorId != null" >
+        #{actorId,jdbcType=INTEGER},
+      </if>
+      <if test="publisher != null" >
+        #{publisher,jdbcType=VARCHAR},
+      </if>
+      <if test="publishId != null" >
+        #{publishId,jdbcType=INTEGER},
+      </if>
+      <if test="publishTime != null" >
+        #{publishTime,jdbcType=BIGINT},
+      </if>
+      <if test="category != null" >
+        #{category,jdbcType=VARCHAR},
+      </if>
+      <if test="source != null" >
+        #{source,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null" >
+        #{createTime,jdbcType=BIGINT},
+      </if>
+      <if test="freeImgs != null" >
+        #{freeImgs,jdbcType=VARCHAR},
+      </if>
+      <if test="sourceImgs != null" >
+        #{sourceImgs,jdbcType=VARCHAR},
+      </if>
+      <if test="tags != null" >
+        #{tags,jdbcType=VARCHAR},
+      </if>
+      <if test="status != null" >
+        #{status,jdbcType=VARCHAR},
+      </if>
+      <if test="imgs != null" >
+        #{imgs,jdbcType=LONGVARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.mm.backend.pojo.PictureAlbum" >
+    update picture_album
+    <set >
+      <if test="collectName != null" >
+        collect_name = #{collectName,jdbcType=VARCHAR},
+      </if>
+      <if test="cover != null" >
+        cover = #{cover,jdbcType=VARCHAR},
+      </if>
+      <if test="pictureNumber != null" >
+        picture_number = #{pictureNumber,jdbcType=INTEGER},
+      </if>
+      <if test="actor != null" >
+        actor = #{actor,jdbcType=VARCHAR},
+      </if>
+      <if test="actorId != null" >
+        actor_id = #{actorId,jdbcType=INTEGER},
+      </if>
+      <if test="publisher != null" >
+        publisher = #{publisher,jdbcType=VARCHAR},
+      </if>
+      <if test="publishId != null" >
+        publish_id = #{publishId,jdbcType=INTEGER},
+      </if>
+      <if test="publishTime != null" >
+        publish_time = #{publishTime,jdbcType=BIGINT},
+      </if>
+      <if test="category != null" >
+        category = #{category,jdbcType=VARCHAR},
+      </if>
+      <if test="source != null" >
+        source = #{source,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null" >
+        create_time = #{createTime,jdbcType=BIGINT},
+      </if>
+      <if test="freeImgs != null" >
+        free_imgs = #{freeImgs,jdbcType=VARCHAR},
+      </if>
+      <if test="sourceImgs != null" >
+        source_imgs = #{sourceImgs,jdbcType=VARCHAR},
+      </if>
+      <if test="tags != null" >
+        tags = #{tags,jdbcType=VARCHAR},
+      </if>
+      <if test="status != null" >
+        status = #{status,jdbcType=VARCHAR},
+      </if>
+      <if test="imgs != null" >
+        imgs = #{imgs,jdbcType=LONGVARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKeyWithBLOBs" parameterType="com.mm.backend.pojo.PictureAlbum" >
+    update picture_album
+    set collect_name = #{collectName,jdbcType=VARCHAR},
+      cover = #{cover,jdbcType=VARCHAR},
+      picture_number = #{pictureNumber,jdbcType=INTEGER},
+      actor = #{actor,jdbcType=VARCHAR},
+      actor_id = #{actorId,jdbcType=INTEGER},
+      publisher = #{publisher,jdbcType=VARCHAR},
+      publish_id = #{publishId,jdbcType=INTEGER},
+      publish_time = #{publishTime,jdbcType=BIGINT},
+      category = #{category,jdbcType=VARCHAR},
+      source = #{source,jdbcType=VARCHAR},
+      create_time = #{createTime,jdbcType=BIGINT},
+      free_imgs = #{freeImgs,jdbcType=VARCHAR},
+      source_imgs = #{sourceImgs,jdbcType=VARCHAR},
+      tags = #{tags,jdbcType=VARCHAR},
+      status = #{status,jdbcType=VARCHAR},
+      imgs = #{imgs,jdbcType=LONGVARCHAR}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.mm.backend.pojo.PictureAlbum" >
+    update picture_album
+    set collect_name = #{collectName,jdbcType=VARCHAR},
+      cover = #{cover,jdbcType=VARCHAR},
+      picture_number = #{pictureNumber,jdbcType=INTEGER},
+      actor = #{actor,jdbcType=VARCHAR},
+      actor_id = #{actorId,jdbcType=INTEGER},
+      publisher = #{publisher,jdbcType=VARCHAR},
+      publish_id = #{publishId,jdbcType=INTEGER},
+      publish_time = #{publishTime,jdbcType=BIGINT},
+      category = #{category,jdbcType=VARCHAR},
+      source = #{source,jdbcType=VARCHAR},
+      create_time = #{createTime,jdbcType=BIGINT},
+      free_imgs = #{freeImgs,jdbcType=VARCHAR},
+      source_imgs = #{sourceImgs,jdbcType=VARCHAR},
+      tags = #{tags,jdbcType=VARCHAR},
+      status = #{status,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>

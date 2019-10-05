@@ -22,6 +22,12 @@ public class PictureListBackendAction {
     private  Integer actorId;
 
     /**
+     *  标签
+     */
+    @ApiModelProperty(value = "标签", example = "乙女")
+    private  String tag;
+
+    /**
      *  分页码数
      */
     @Min(1)

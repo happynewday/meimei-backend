@@ -38,7 +38,7 @@ public class PictureBackendController {
             headers="Content-Type=application/json;charset=UTF-8", produces="application/json;charset=UTF-8")
     @ApiOperation(value = "图集列表", notes = "图集列表")
     RestResult<PageInfo<PictureListBackendVo>> collectList(@RequestBody @Validated PictureListBackendAction action) {
-        PageInfo<PictureListBackendVo> page = pictureBackendService.getPictureCollectList(action.getActorId(), action.getPageNum(), action.getPageSize());
+        PageInfo<PictureListBackendVo> page = pictureBackendService.getPictureCollectList(action.getActorId(), action.getTag(), action.getPageNum(), action.getPageSize());
         return RestResult.createBySuccess(page);
     }
 

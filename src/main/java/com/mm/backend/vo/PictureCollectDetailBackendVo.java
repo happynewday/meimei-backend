@@ -61,5 +61,11 @@ public class PictureCollectDetailBackendVo {
      * 图片列表
      */
     @ApiModelProperty(value = "图片列表")
-    private List<SinglePictureVo> pictures;
+    private String[] pictures;
+
+    /**
+     * 演员信息
+     */
+    @ApiModelProperty(value = "演员信息")
+    private ActorDetailBackendVo actorInfo;
 }
