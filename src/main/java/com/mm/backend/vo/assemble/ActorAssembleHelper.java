@@ -66,4 +66,26 @@ public class ActorAssembleHelper {
                 build();
         return actorVo;
     }
+
+    public static List<ActorListBackendVo> assembleActorListNew(List<ActorNew> actorList){
+        List<ActorListBackendVo> actorListBackendVos = new ArrayList<>();
+        for(ActorNew actor: actorList){
+            actorListBackendVos.add(assembleActorNew(actor));
+        }
+        return actorListBackendVos;
+    }
+
+    public static ActorListBackendVo assembleActorNew(ActorNew actor){
+        ActorListBackendVo actorVo = ActorListBackendVo.builder().
+                actorId(actor.getId()).
+                actorName(actor.getAname()).
+                avatar(actor.getAvatar()).
+                weibo(actor.getWeibo()).
+                homepage(actor.getHomepage()).
+                weight(StringUtils.isBlank(actor.getWt())? null : (float)actor.getWt()).
+                height(StringUtils.isBlank(actor.getHt())? null : (float)actor.getHt()).
+                cup(actor.getCup()).
+                build();
+        return actorVo;
+    }
 }

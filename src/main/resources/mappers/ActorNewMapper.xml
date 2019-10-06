@@ -32,7 +32,7 @@
   <select id="selectAll" resultMap="BaseResultMap" >
     select
     <include refid="Base_Column_List" />
-    from actor
+    from actor_new
   </select>
 
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >

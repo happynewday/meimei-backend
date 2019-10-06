@@ -32,11 +32,11 @@ public class ActorBackendServiceImpl implements ActorBackendService {
 
     public PageInfo<ActorListBackendVo> getActorList(Integer pageNum, Integer pageSize){
         PageHelper.startPage(pageNum,pageSize);
-        List<Actor> actorList = actorMapper.selectAll();
+        List<ActorNew> actorList = actorNewMapper.selectAll();
 
         PageInfo pageInfo = new PageInfo(actorList);
 
-        List<ActorListBackendVo> actorListVos = ActorAssembleHelper.assembleActorList(actorList);
+        List<ActorListBackendVo> actorListVos = ActorAssembleHelper.assembleActorListNew(actorList);
         pageInfo.setList(actorListVos);
         return pageInfo;
     }
