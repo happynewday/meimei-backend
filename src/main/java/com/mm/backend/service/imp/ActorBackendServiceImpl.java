@@ -3,7 +3,9 @@ package com.mm.backend.service.imp;
 import com.github.pagehelper.PageHelper;
 import com.mm.backend.common.PageInfo;
 import com.mm.backend.dao.ActorMapper;
+import com.mm.backend.dao.ActorNewMapper;
 import com.mm.backend.pojo.Actor;
+import com.mm.backend.pojo.ActorNew;
 import com.mm.backend.service.ActorBackendService;
 import com.mm.backend.vo.ActorDetailBackendVo;
 import com.mm.backend.vo.ActorListBackendVo;
@@ -25,6 +27,9 @@ public class ActorBackendServiceImpl implements ActorBackendService {
     @Autowired
     private ActorMapper actorMapper;
 
+    @Autowired
+    private ActorNewMapper actorNewMapper;
+
     public PageInfo<ActorListBackendVo> getActorList(Integer pageNum, Integer pageSize){
         PageHelper.startPage(pageNum,pageSize);
         List<Actor> actorList = actorMapper.selectAll();
@@ -37,7 +42,7 @@ public class ActorBackendServiceImpl implements ActorBackendService {
     }
 
     public ActorDetailBackendVo getActorDetail(Integer actorId){
-        Actor actor = actorMapper.selectByPrimaryKey(actorId);
-        return ActorAssembleHelper.assembleActorDetail(actor);
+        ActorNew actor = actorNewMapper.selectByPrimaryKey(actorId);
+        return ActorAssembleHelper.assembleActorDetailNew(actor);
     }
 }

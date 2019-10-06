@@ -1,6 +1,7 @@
 package com.mm.backend.vo.assemble;
 
 import com.mm.backend.pojo.Actor;
+import com.mm.backend.pojo.ActorNew;
 import com.mm.backend.pojo.PictureCollect;
 import com.mm.backend.vo.ActorDetailBackendVo;
 import com.mm.backend.vo.ActorListBackendVo;
@@ -46,6 +47,20 @@ public class ActorAssembleHelper {
                 homepage(actor.getHomepage()).
                 weight((float)48).
                 height((float)166).
+                cup(actor.getCup()).
+                build();
+        return actorVo;
+    }
+
+    public static ActorDetailBackendVo assembleActorDetailNew(ActorNew actor){
+        ActorDetailBackendVo actorVo = ActorDetailBackendVo.builder().
+                actorId(actor.getId()).
+                actorName(actor.getAname()).
+                avatar(actor.getAvatar()).
+                weibo(actor.getWeibo()).
+                homepage(actor.getHomepage()).
+                weight((float)actor.getWt()).
+                height((float)actor.getHt()).
                 cup(actor.getCup()).
                 build();
         return actorVo;
