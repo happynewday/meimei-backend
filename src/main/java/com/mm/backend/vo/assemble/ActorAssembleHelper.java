@@ -1,5 +1,6 @@
 package com.mm.backend.vo.assemble;
 
+import com.mm.backend.common.StringUtils;
 import com.mm.backend.pojo.Actor;
 import com.mm.backend.pojo.ActorNew;
 import com.mm.backend.pojo.PictureCollect;
@@ -59,8 +60,8 @@ public class ActorAssembleHelper {
                 avatar(actor.getAvatar()).
                 weibo(actor.getWeibo()).
                 homepage(actor.getHomepage()).
-                weight((float)actor.getWt()).
-                height((float)actor.getHt()).
+                weight(StringUtils.isBlank(actor.getWt())? null : (float)actor.getWt()).
+                height(StringUtils.isBlank(actor.getHt())? null : (float)actor.getHt()).
                 cup(actor.getCup()).
                 build();
         return actorVo;
