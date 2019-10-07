@@ -1,9 +1,6 @@
 package com.mm.backend.controller;
 
-import com.mm.backend.action.FavoratePictureBackendAction;
-import com.mm.backend.action.PictureCollectDetailBackendAction;
-import com.mm.backend.action.PictureListBackendAction;
-import com.mm.backend.action.RegistUserBackendAction;
+import com.mm.backend.action.*;
 import com.mm.backend.common.PageInfo;
 import com.mm.backend.common.RestResult;
 import com.mm.backend.interceptor.RequestHeaderContext;
@@ -33,6 +30,18 @@ public class PictureBackendController {
 
     @Autowired
     private PictureBackendService pictureBackendService;
+
+    @RequestMapping(value = "/freePicture",method = RequestMethod.POST,
+            headers="Content-Type=application/json;charset=UTF-8", produces="application/json;charset=UTF-8")
+    @ApiOperation(value = "体验图集详情", notes = "体验图集详情")
+    RestResult<PictureCollectDetailBackendVo> freeCollectList() {
+        try {
+            PictureCollectDetailBackendVo p = pictureBackendService.getPictureCollectDetails(28782);
+            return RestResult.createBySuccess(p);
+        } catch (Exception e){
+            return RestResult.createByErrorMessage(e.getMessage());
+        }
+    }
 
     @RequestMapping(value = "/list",method = RequestMethod.POST,
             headers="Content-Type=application/json;charset=UTF-8", produces="application/json;charset=UTF-8")
@@ -78,5 +87,14 @@ public class PictureBackendController {
         } else {
             return RestResult.createByError();
         }
+    }
+
+    @RequestMapping(value = "/favoratePictures",method = RequestMethod.POST,
+            headers="Content-Type=application/json;charset=UTF-8", produces="application/json;charset=UTF-8")
+    @ApiOperation(value = "获取收藏图片列表", notes = "获取收藏图片列表")
+    RestResult<PageInfo<PictureListBackendVo>> favorateList(@RequestBody @Validated FavoratePictureListBackendAction action) {
+        Integer uid = Integer.valueOf(RequestHeaderContext.getInstance().getUserId());
+        PageInfo<PictureListBackendVo> page = pictureBackendService.getFavorateList(uid, action.getPageNum(), action.getPageSize());
+        return RestResult.createBySuccess(page);
     }
 }

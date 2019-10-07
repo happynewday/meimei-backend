@@ -9,9 +9,41 @@
       <arg column="create_time" jdbcType="BIGINT" javaType="java.lang.Long" />
     </constructor>
   </resultMap>
+
+  <resultMap id="ResultMapWithBLOBs" type="com.mm.backend.pojo.PictureAlbum" >
+    <constructor >
+      <idArg column="id" jdbcType="INTEGER" javaType="java.lang.Integer" />
+      <arg column="collect_name" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="cover" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="picture_number" jdbcType="INTEGER" javaType="java.lang.Integer" />
+      <arg column="actor" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="actor_id" jdbcType="INTEGER" javaType="java.lang.Integer" />
+      <arg column="publisher" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="publish_id" jdbcType="INTEGER" javaType="java.lang.Integer" />
+      <arg column="publish_time" jdbcType="BIGINT" javaType="java.lang.Long" />
+      <arg column="category" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="source" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="create_time" jdbcType="BIGINT" javaType="java.lang.Long" />
+      <arg column="free_imgs" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="source_imgs" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="tags" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="status" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="imgs" jdbcType="LONGVARCHAR" javaType="java.lang.String" />
+    </constructor>
+  </resultMap>
+
   <sql id="Base_Column_List" >
     id, user_id, collect_id, create_time
   </sql>
+
+  <select id="getFavoratePictureList" resultMap="ResultMapWithBLOBs" parameterType="java.lang.Integer" >
+    select
+    b.*
+    from favorate_picture as a left join picture_album as b
+    on a.collect_id = b.id
+    where a.user_id = #{uid,jdbcType=INTEGER}
+  </select>
+
   <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
     select 
     <include refid="Base_Column_List" />
@@ -19,7 +51,7 @@
     where id = #{id,jdbcType=INTEGER}
   </select>
 
-  <select id="selectByUidAndCollectId" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+  <select id="selectByUidAndCollectId" resultMap="BaseResultMap">
     select
     <include refid="Base_Column_List" />
     from favorate_picture

@@ -17,4 +17,6 @@ public interface PictureBackendService {
     boolean addFavoratePicture(Integer userId, Integer collectId);
 
     boolean removeFavoratePicture(Integer userId, Integer collectId);
+
+    PageInfo<PictureListBackendVo> getFavorateList(Integer userId, Integer pageNum, Integer pageSize);
 }

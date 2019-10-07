@@ -61,17 +61,7 @@ public class PictureBackendServiceImpl implements PictureBackendService {
         }
         PageInfo pageInfo = new PageInfo(pictureList);
 
-        List<PictureListBackendVo> pictureListVos = new ArrayList<>();
-        for(PictureAlbum picture: pictureList){
-            PictureListBackendVo pictureVo = PictureAssembleHelper.assemblePictureNew(picture);
-            if(StringUtils.isNotBlank(picture.getActorId())) {
-                pictureVo.setActorInfo(actorBackendService.getActorDetail(picture.getActorId()));
-            } else {
-                pictureVo.setActorInfo(null);
-            }
-            pictureListVos.add(pictureVo);
-        }
-        pageInfo.setList(pictureListVos);
+        pageInfo.setList(AssemblePictureList(pictureList));
         return pageInfo;
     }
 
@@ -112,5 +102,29 @@ public class PictureBackendServiceImpl implements PictureBackendService {
             favoratePictureMapper.deleteByPrimaryKey(favoratePicture.getId());
         }
         return true;
+    }
+
+    public PageInfo<PictureListBackendVo> getFavorateList(Integer userId, Integer pageNum, Integer pageSize){
+        PageHelper.startPage(pageNum,pageSize);
+
+        List<PictureAlbum> pictureList = favoratePictureMapper.getFavoratePictureList(userId);
+        PageInfo pageInfo = new PageInfo(pictureList);
+
+        pageInfo.setList(AssemblePictureList(pictureList));
+        return pageInfo;
+    }
+
+    private List<PictureListBackendVo> AssemblePictureList(List<PictureAlbum> pictureList){
+        List<PictureListBackendVo> pictureListVos = new ArrayList<>();
+        for(PictureAlbum picture: pictureList){
+            PictureListBackendVo pictureVo = PictureAssembleHelper.assemblePictureNew(picture);
+            if(StringUtils.isNotBlank(picture.getActorId())) {
+                pictureVo.setActorInfo(actorBackendService.getActorDetail(picture.getActorId()));
+            } else {
+                pictureVo.setActorInfo(null);
+            }
+            pictureListVos.add(pictureVo);
+        }
+        return pictureListVos;
     }
 }

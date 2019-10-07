@@ -68,8 +68,8 @@ public class PictureAssembleHelper {
 
     public static PictureCollectDetailBackendVo assemblePictureDetailsNew(PictureAlbum pictureAlbum) {
         String[] pictures = new String[0];
-        if(StringUtils.isNotBlank(pictureAlbum.getImgs())) {
-            pictures = pictureAlbum.getImgs().split(",");
+        if(StringUtils.isNotBlank(pictureAlbum.getSourceImgs())) {
+            pictures = pictureAlbum.getSourceImgs().split(",");
         }
 
         return PictureCollectDetailBackendVo.builder().

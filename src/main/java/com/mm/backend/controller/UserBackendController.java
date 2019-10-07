@@ -5,6 +5,8 @@ import com.mm.backend.action.RegistUserBackendAction;
 import com.mm.backend.action.ThirdLoginBackendAction;
 import com.mm.backend.action.user.UserInfoBackendAction;
 import com.mm.backend.common.RestResult;
+import com.mm.backend.interceptor.RequestHeaderContext;
+import com.mm.backend.redis.RedisService;
 import com.mm.backend.service.UserBackendService;
 import com.mm.backend.vo.UserBackendVo;
 import io.swagger.annotations.ApiOperation;
@@ -33,6 +35,9 @@ public class UserBackendController {
     @Autowired
     private UserBackendService userBackendService;
 
+    @Autowired
+    private RedisService redisService;
+
     @RequestMapping(value = "/regist",method = RequestMethod.POST,
             headers="Content-Type=application/json;charset=UTF-8", produces="application/json;charset=UTF-8")
     @ApiOperation(value = "注册", notes = "注册")
@@ -57,6 +62,14 @@ public class UserBackendController {
         } catch (Exception e){
             return RestResult.createByErrorMessage(e.getMessage());
         }
+    }
+
+    @RequestMapping(value = "/logout",method = RequestMethod.POST)
+    @ApiOperation(value = "登出", notes = "登出")
+    RestResult<Void> logout() {
+        String token = RequestHeaderContext.getInstance().getToken();
+        redisService.del(token);
+        return RestResult.createBySuccess();
     }
 
     @RequestMapping(value = "/thirdLogin",method = RequestMethod.POST,
