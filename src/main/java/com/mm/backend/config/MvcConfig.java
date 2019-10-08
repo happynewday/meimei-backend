@@ -27,6 +27,7 @@ public class MvcConfig implements WebMvcConfigurer {
         registry.addInterceptor(authInterceptor());
     }
 
+    /**
     @Override
     public void addCorsMappings(CorsRegistry registry) {
         registry.addMapping("/**")
@@ -37,5 +38,5 @@ public class MvcConfig implements WebMvcConfigurer {
                 .allowedMethods("GET", "POST", "PUT", "DELETE")
                 .allowedHeaders("*")
                 .maxAge(86400);
-    }
+    }*/
 }
