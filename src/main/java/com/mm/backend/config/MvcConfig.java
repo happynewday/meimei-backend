@@ -34,7 +34,7 @@ public class MvcConfig implements WebMvcConfigurer {
                 .allowCredentials(true)
                 //放行哪些原始域
                 .allowedOrigins("*")
-                .allowedMethods(new String[]{"GET", "POST", "PUT", "DELETE"})
+                .allowedMethods(new String[]{"GET", "POST", "PUT", "DELETE", "OPTIONS"})
                 .allowedHeaders("*")
                 .maxAge(86400);
     }

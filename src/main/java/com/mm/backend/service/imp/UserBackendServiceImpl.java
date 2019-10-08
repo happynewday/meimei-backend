@@ -80,7 +80,7 @@ public class UserBackendServiceImpl implements UserBackendService {
 
         //更新redis
         redisService.del(oldToken);
-        redisService.set(token, user.getId().toString(), 86400 * 30);
+        redisService.set(token, user.getId().toString() + ":" + user.getLevel().toString(), 86400 * 30);
 
         return UserAssembleHelper.assembleUserAuthInfo(user);
     }
