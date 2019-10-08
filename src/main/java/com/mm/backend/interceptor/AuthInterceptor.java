@@ -59,7 +59,7 @@ public class AuthInterceptor extends HandlerInterceptorAdapter {
         String token = request.getHeader(HEAD_AUTH_TOKEN);
         Object userObject = this.redisService.get(token);
         if(null == userObject){
-            returnJson(response);
+            returnJson(response, "请先登录");
             //throw new Exception("用户未登录");
             return false;
         }
@@ -67,6 +67,13 @@ public class AuthInterceptor extends HandlerInterceptorAdapter {
         String[] userInfo = userObject.toString().split(":");
         String userId = userInfo[0];
         String userLevel = userInfo[1];
+        if((requestUri.equals("/backend/picture/unfavorate")
+                || requestUri.equals("/backend/picture/favorate")
+                || requestUri.equals("/backend/picture/favoratepictures"))
+            && (Integer.valueOf(userLevel) < 2)){
+            returnJson(response,"权限不足");
+        }
+
         new RequestHeaderContext.RequestHeaderContextBuild()
                 .token(token)
                 .userId(userId)
@@ -75,13 +82,13 @@ public class AuthInterceptor extends HandlerInterceptorAdapter {
         return true;
     }
 
-    private void returnJson(HttpServletResponse response){
+    private void returnJson(HttpServletResponse response, String msg){
         PrintWriter writer = null;
         response.setCharacterEncoding("UTF-8");
         response.setContentType("application/json; charset=utf-8");
         try {
             writer = response.getWriter();
-            RestResult<Void> result = RestResult.createByErrorMessage("用户令牌token无效");
+            RestResult<Void> result = RestResult.createByErrorMessage(msg);
             writer.write(JSON.toJSONString(result));
         } catch (IOException e){
             System.out.println("拦截器输出流异常"+e);
