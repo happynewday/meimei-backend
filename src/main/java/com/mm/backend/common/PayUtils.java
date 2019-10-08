@@ -6,29 +6,43 @@ import java.util.UUID;
 
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Component;
 
+@Component
 public class PayUtils {
     private static final org.slf4j.Logger logger =  LoggerFactory.getLogger(PayUtils.class);
 
-    @Value("${paysapi.uid}")
     public static String UID;
-
-    @Value("${server.notify_url}")
+    public static String TOKEN;
     public static String NOTIFY_URL;
-
-    @Value("${server.return_url}")
     public static String RETURN_URL;
-
     public static String BASE_URL = "https://pay.paysapi.com";
 
+    @Value("${paysapi.uid}")
+    public void setUid(String uid){
+        PayUtils.UID = uid;
+    }
+
     @Value("${paysapi.token}")
-    public static String TOKEN;
+    public void setToken(String token){
+        PayUtils.TOKEN = token;
+    }
+
+    @Value("${server.notify_url}")
+    public void setNotifyUrl(String notifyUrl){
+        PayUtils.NOTIFY_URL = notifyUrl;
+    }
+
+    @Value("${server.return_url}")
+    public void setReturnUrl(String returnUrl){
+        PayUtils.RETURN_URL = returnUrl;
+    }
 
     public static Map<String, Object> payOrder(Map<String, Object> remoteMap) {
         Map<String, Object> paramMap = new HashMap<String, Object>();
-        paramMap.put("uid", UID);
-        paramMap.put("notify_url", NOTIFY_URL);
-        paramMap.put("return_url", RETURN_URL);
+        paramMap.put("uid", PayUtils.UID);
+        paramMap.put("notify_url", PayUtils.NOTIFY_URL);
+        paramMap.put("return_url", PayUtils.RETURN_URL);
         paramMap.putAll(remoteMap);
         paramMap.put("key", getKey(paramMap));
         return paramMap;

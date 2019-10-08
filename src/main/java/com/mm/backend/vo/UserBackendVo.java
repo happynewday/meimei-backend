@@ -52,7 +52,7 @@ public class UserBackendVo {
     /**
      * 等级
      */
-    @ApiModelProperty(value = "VIP等级，0为普通用户，1为VIP")
+    @ApiModelProperty(value = "VIP等级，0为普通用户，1为普通会员，2为高级会员，3为VIP")
     private Integer level;
 
     /**
