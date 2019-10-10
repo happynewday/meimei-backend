@@ -13,4 +13,6 @@ public interface UserBackendService {
     UserBackendVo login(String username, String password, String uuid) throws Exception;
 
     UserBackendVo getUserInfo(Integer uid, String uuid) throws RuntimeException;
+
+    boolean setVIPLevel(Integer uid, Byte level);
 }

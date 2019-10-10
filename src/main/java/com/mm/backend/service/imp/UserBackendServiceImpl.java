@@ -102,11 +102,22 @@ public class UserBackendServiceImpl implements UserBackendService {
                         build();
 
                 if(0 == userMapper.insertSelective(user)){
-                    throw new RuntimeException("添加用户失败");
+                    throw new RuntimeException("用户不存在");
                 }
             }
             user = userMapper.selectByUuid(uuid);
         }
         return UserAssembleHelper.assembleUserAuthInfo(user);
+    }
+
+    @Override
+    public boolean setVIPLevel(Integer uid, Byte level) {
+        User user = userMapper.selectByPrimaryKey(uid);
+        if(null == user){
+            return false;
+        }
+        user.setLevel(level);
+        userMapper.updateByPrimaryKeySelective(user);
+        return true;
     }
 }
