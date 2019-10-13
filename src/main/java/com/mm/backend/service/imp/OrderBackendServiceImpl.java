@@ -1,5 +1,6 @@
 package com.mm.backend.service.imp;
 
+import com.mm.backend.common.HttpRequestUtils;
 import com.mm.backend.common.MD5Utils;
 import com.mm.backend.common.PayUtils;
 import com.mm.backend.dao.OrderMapper;
@@ -19,8 +20,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.env.Environment;
 import org.springframework.stereotype.Service;
 import org.springframework.ui.ModelMap;
+import org.springframework.util.LinkedMultiValueMap;
+import org.springframework.util.MultiValueMap;
 
 import java.security.MessageDigest;
+import java.text.DecimalFormat;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -73,19 +77,35 @@ public class OrderBackendServiceImpl implements OrderBackendService {
         Integer productId = order.getProductId();
         Product product = productMapper.selectByPrimaryKey(productId);
 
+        DecimalFormat df = new DecimalFormat("0.00");
         Map<String, Object> paramMap = new HashMap<>();
         paramMap.put("goodsname", product.getPname());
         paramMap.put("istype", istype);
         paramMap.put("orderid", orderId);
         paramMap.put("orderuid", userId);
-        paramMap.put("price", product.getPrice());
+        paramMap.put("price", df.format(product.getPrice()));
 
         //String key = md5(formatedString.toString());
         paramMap = PayUtils.payOrder(paramMap);
+//
+//        DecimalFormat df = new DecimalFormat("0.00");
+//        MultiValueMap<String, String> httpParams = new LinkedMultiValueMap<>();
+//        httpParams.add("uid", paramMap.get("uid").toString());
+//        httpParams.add("price", df.format(paramMap.get("price")));
+//        httpParams.add("istype", paramMap.get("istype").toString());
+//        httpParams.add("notify_url", paramMap.get("notify_url").toString());
+//        httpParams.add("return_url", paramMap.get("return_url").toString());
+//        httpParams.add("orderid", paramMap.get("orderid").toString());
+//        httpParams.add("orderuid", paramMap.get("orderuid").toString());
+//        httpParams.add("goodsname", paramMap.get("goodsname").toString());
+//        httpParams.add("key", paramMap.get("key").toString());
+//
+//        String ret = HttpRequestUtils.sendPostRequest("https://pay.bearsoftware.net.cn/?format=json", httpParams);
+
         PrepayBackendVo prepayBackendVo = PrepayBackendVo.builder()
                 .uid(paramMap.get("uid").toString())
                 .istype(istype)
-                .price(product.getPrice())
+                .price(paramMap.get("price").toString())
                 .notify_url(paramMap.get("notify_url").toString())
                 .return_url(paramMap.get("return_url").toString())
                 .goodsname(paramMap.get("goodsname").toString())

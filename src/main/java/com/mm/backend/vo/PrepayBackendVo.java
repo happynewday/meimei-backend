@@ -32,7 +32,7 @@ public class PrepayBackendVo {
      * 价格
      */
     @ApiModelProperty(value = "价格")
-    private Double price;
+    private String price;
 
     /**
      * 通知回调地址
