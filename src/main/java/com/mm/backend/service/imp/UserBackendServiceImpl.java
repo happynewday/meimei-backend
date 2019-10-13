@@ -49,7 +49,8 @@ public class UserBackendServiceImpl implements UserBackendService {
         }
         user = userMapper.selectByUsername(username);
 
-        redisService.set(token, user.getId().toString(), 86400 * 30);
+        //redisService.set(token, user.getId().toString(), 86400 * 30);
+        updateRedis(null, token, user.getId(), user.getLevel());
 
         return UserAssembleHelper.assembleUserAuthInfo(user);
     }
@@ -79,8 +80,9 @@ public class UserBackendServiceImpl implements UserBackendService {
         userMapper.updateByPrimaryKeySelective(user);
 
         //更新redis
-        redisService.del(oldToken);
-        redisService.set(token, user.getId().toString() + ":" + user.getLevel().toString(), 86400 * 30);
+        //redisService.del(oldToken);
+        //redisService.set(token, user.getId().toString() + ":" + user.getLevel().toString(), 86400 * 30);
+        updateRedis(oldToken, token, user.getId(),user.getLevel());
 
         return UserAssembleHelper.assembleUserAuthInfo(user);
     }
@@ -119,5 +121,13 @@ public class UserBackendServiceImpl implements UserBackendService {
         user.setLevel(level);
         userMapper.updateByPrimaryKeySelective(user);
         return true;
+    }
+
+    private void updateRedis(String oldToken, String newToken, Integer userId, Byte userLevel){
+        //更新redis
+        if(StringUtils.isNotBlank(oldToken)) {
+            redisService.del(oldToken);
+        }
+        redisService.set(newToken, userId.toString() + ":" + userLevel.toString(), 86400 * 30);
     }
 }
