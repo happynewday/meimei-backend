@@ -38,13 +38,13 @@ public class PrepayBackendVo {
      * 通知回调地址
      */
     @ApiModelProperty(value = "通知回调地址")
-    private String notifyUrl;
+    private String notify_url;
 
     /**
      * 跳转地址
      */
     @ApiModelProperty(value = "跳转地址")
-    private String returnUrl;
+    private String return_url;
 
     /**
      * 商品名称
