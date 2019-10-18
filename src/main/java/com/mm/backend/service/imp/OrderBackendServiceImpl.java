@@ -6,6 +6,7 @@ import com.mm.backend.common.PayUtils;
 import com.mm.backend.dao.OrderMapper;
 import com.mm.backend.dao.ProductMapper;
 import com.mm.backend.dao.UserMapper;
+import com.mm.backend.exceptions.BusinessException;
 import com.mm.backend.pojo.Order;
 import com.mm.backend.pojo.Product;
 import com.mm.backend.pojo.User;
@@ -28,6 +29,10 @@ import java.text.DecimalFormat;
 import java.util.HashMap;
 import java.util.Map;
 
+import static com.mm.backend.common.ResponseCode.ORDER_REQUEST_ORDER_GENERATE_FAILED;
+import static com.mm.backend.common.ResponseCode.ORDER_REQUEST_PRODUCT_NOT_EXIST;
+import static com.mm.backend.common.ResponseCode.PREPAY_ORDER_NOT_EXIST;
+
 /**
  * @ClassName OrderBackendServiceImpl
  * @Description TODO
@@ -49,10 +54,10 @@ public class OrderBackendServiceImpl implements OrderBackendService {
     @Autowired
     private UserBackendService userBackendService;
 
-    public OrderRequestBackendVo orderRequest(Integer userId, Integer productId) throws Exception{
+    public OrderRequestBackendVo orderRequest(Integer userId, Integer productId) throws BusinessException{
         Product product = productMapper.selectByPrimaryKey(productId);
         if(null == product){
-            throw new Exception("商品不存在");
+            throw new BusinessException(ORDER_REQUEST_PRODUCT_NOT_EXIST);
         }
         long time = System.currentTimeMillis();
         Order order = Order.builder()
@@ -63,16 +68,16 @@ public class OrderBackendServiceImpl implements OrderBackendService {
                 .status((short)0)
                 .build();
         if(0 == orderMapper.insert(order)){
-            throw new Exception("订单生成失败");
+            throw new BusinessException(ORDER_REQUEST_ORDER_GENERATE_FAILED);
         }
 
         return OrderAssembleHelper.assembleOrderRequest(order);
     }
 
-    public PrepayBackendVo prepay(Integer userId, Integer orderId, Integer istype) throws Exception {
+    public PrepayBackendVo prepay(Integer userId, Integer orderId, Integer istype) throws BusinessException {
         Order order = orderMapper.selectByPrimaryKey(orderId);
         if(null == order){
-            throw new Exception("订单不存在");
+            throw new BusinessException(PREPAY_ORDER_NOT_EXIST);
         }
         Integer productId = order.getProductId();
         Product product = productMapper.selectByPrimaryKey(productId);
@@ -85,7 +90,6 @@ public class OrderBackendServiceImpl implements OrderBackendService {
         paramMap.put("orderuid", userId);
         paramMap.put("price", df.format(product.getPrice()));
 
-        //String key = md5(formatedString.toString());
         paramMap = PayUtils.payOrder(paramMap);
         PrepayBackendVo prepayBackendVo = PrepayBackendVo.builder()
                 .uid(paramMap.get("uid").toString())
