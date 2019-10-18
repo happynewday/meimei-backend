@@ -14,4 +14,6 @@ public interface UserBackendService {
     UserBackendVo login(String username, String password, String uuid) throws BusinessException;
 
     UserBackendVo getUserInfo(Integer uid, String uuid) throws BusinessException;
+
+    boolean setVIPLevel(Integer uid, Byte level);
 }

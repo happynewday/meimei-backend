@@ -2,13 +2,12 @@ package com.mm.backend.service.imp;
 
 import com.mm.backend.common.MD5Utils;
 import com.mm.backend.common.PayUtils;
-import com.mm.backend.common.ResponseCode;
 import com.mm.backend.dao.OrderMapper;
 import com.mm.backend.dao.ProductMapper;
-import com.mm.backend.exceptions.BusinessException;
 import com.mm.backend.pojo.Order;
 import com.mm.backend.pojo.Product;
 import com.mm.backend.service.OrderBackendService;
+import com.mm.backend.service.UserBackendService;
 import com.mm.backend.vo.OrderRequestBackendVo;
 import com.mm.backend.vo.PrepayBackendVo;
 import com.mm.backend.vo.assemble.OrderAssembleHelper;
@@ -41,10 +40,13 @@ public class OrderBackendServiceImpl implements OrderBackendService {
     @Autowired
     private Environment env;
 
-    public OrderRequestBackendVo orderRequest(Integer userId, Integer productId) throws BusinessException{
+    @Autowired
+    private UserBackendService userBackendService;
+
+    public OrderRequestBackendVo orderRequest(Integer userId, Integer productId) throws Exception{
         Product product = productMapper.selectByPrimaryKey(productId);
         if(null == product){
-            throw new BusinessException(ResponseCode.ORDER_REQUEST_PRODUCT_NOT_EXIST);
+            throw new Exception("商品不存在");
         }
         long time = System.currentTimeMillis();
         Order order = Order.builder()
@@ -55,16 +57,16 @@ public class OrderBackendServiceImpl implements OrderBackendService {
                 .status((short)0)
                 .build();
         if(0 == orderMapper.insert(order)){
-            throw new BusinessException(ResponseCode.ORDER_REQUEST_ORDER_GENERATE_FAILED);
+            throw new Exception("订单生成失败");
         }
 
         return OrderAssembleHelper.assembleOrderRequest(order);
     }
 
-    public PrepayBackendVo prepay(Integer userId, Integer orderId, Integer istype) throws BusinessException {
+    public PrepayBackendVo prepay(Integer userId, Integer orderId, Integer istype) throws Exception {
         Order order = orderMapper.selectByPrimaryKey(orderId);
         if(null == order){
-            throw new BusinessException(ResponseCode.PREPAY_ORDER_NOT_EXIST);
+            throw new Exception("订单不存在");
         }
         Integer productId = order.getProductId();
         Product product = productMapper.selectByPrimaryKey(productId);
@@ -130,6 +132,22 @@ public class OrderBackendServiceImpl implements OrderBackendService {
                     return false;
                 }
             }
+
+            Product product = productMapper.selectByPrimaryKey(order.getProductId());
+            if(null == product){
+                logger.error("no product related with order({})", order.getProductId());
+                return false;
+            }
+            Byte level = 0;
+            if(product.getPname().equals("普通会员")){
+                level = 1;
+            } else if(product.getPname().equals("高级会员")){
+                level = 2;
+            } else if(product.getPname().equals("VIP会员")) {
+                level = 3;
+            }
+
+            userBackendService.setVIPLevel(order.getUserId(), level);
         } else {
             logger.error("[pay notify]checksum failed, the key from remote is {}", notifyParams.get("key"));
             return false;

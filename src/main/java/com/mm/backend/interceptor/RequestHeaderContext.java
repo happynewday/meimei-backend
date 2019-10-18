@@ -9,6 +9,7 @@ public class RequestHeaderContext {
     private static final ThreadLocal<RequestHeaderContext> REQUEST_HEADER_CONTEXT_THREAD_LOCAL=new ThreadLocal<>();
     private String userId;
     private String token;
+    private String userLevel;
 
     public String getUserId() {
         return userId;
@@ -16,6 +17,10 @@ public class RequestHeaderContext {
 
     public String getToken() {
         return token;
+    }
+
+    public String getLevel() {
+        return userLevel;
     }
 
     public static RequestHeaderContext getInstance(){
@@ -33,12 +38,14 @@ public class RequestHeaderContext {
     private RequestHeaderContext(RequestHeaderContextBuild requestHeaderContextBuild){
         this.userId=requestHeaderContextBuild.userId;
         this.token=requestHeaderContextBuild.token;
+        this.userLevel=requestHeaderContextBuild.userLevel;
         setContext(this);
     }
 
     public static class RequestHeaderContextBuild{
         private String userId;
         private String token;
+        private String userLevel;
 
         public RequestHeaderContextBuild userId(String userId){
             this.userId=userId;
@@ -47,6 +54,11 @@ public class RequestHeaderContext {
 
         public RequestHeaderContextBuild token(String token){
             this.token=token;
+            return this;
+        }
+
+        public RequestHeaderContextBuild userLevel(String level){
+            this.userLevel=level;
             return this;
         }
 
