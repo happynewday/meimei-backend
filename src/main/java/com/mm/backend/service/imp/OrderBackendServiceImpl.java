@@ -1,11 +1,14 @@
 package com.mm.backend.service.imp;
 
+import com.mm.backend.common.HttpRequestUtils;
 import com.mm.backend.common.MD5Utils;
 import com.mm.backend.common.PayUtils;
 import com.mm.backend.dao.OrderMapper;
 import com.mm.backend.dao.ProductMapper;
+import com.mm.backend.dao.UserMapper;
 import com.mm.backend.pojo.Order;
 import com.mm.backend.pojo.Product;
+import com.mm.backend.pojo.User;
 import com.mm.backend.service.OrderBackendService;
 import com.mm.backend.service.UserBackendService;
 import com.mm.backend.vo.OrderRequestBackendVo;
@@ -17,8 +20,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.env.Environment;
 import org.springframework.stereotype.Service;
 import org.springframework.ui.ModelMap;
+import org.springframework.util.LinkedMultiValueMap;
+import org.springframework.util.MultiValueMap;
 
 import java.security.MessageDigest;
+import java.text.DecimalFormat;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -71,21 +77,22 @@ public class OrderBackendServiceImpl implements OrderBackendService {
         Integer productId = order.getProductId();
         Product product = productMapper.selectByPrimaryKey(productId);
 
+        DecimalFormat df = new DecimalFormat("0.00");
         Map<String, Object> paramMap = new HashMap<>();
         paramMap.put("goodsname", product.getPname());
         paramMap.put("istype", istype);
         paramMap.put("orderid", orderId);
         paramMap.put("orderuid", userId);
-        paramMap.put("price", product.getPrice());
+        paramMap.put("price", df.format(product.getPrice()));
 
         //String key = md5(formatedString.toString());
         paramMap = PayUtils.payOrder(paramMap);
         PrepayBackendVo prepayBackendVo = PrepayBackendVo.builder()
                 .uid(paramMap.get("uid").toString())
                 .istype(istype)
-                .price(product.getPrice())
-                .notifyUrl(paramMap.get("notify_url").toString())
-                .returnUrl(paramMap.get("return_url").toString())
+                .price(paramMap.get("price").toString())
+                .notify_url(paramMap.get("notify_url").toString())
+                .return_url(paramMap.get("return_url").toString())
                 .goodsname(paramMap.get("goodsname").toString())
                 .orderid(paramMap.get("orderid").toString())
                 .orderuid(paramMap.get("orderuid").toString())
