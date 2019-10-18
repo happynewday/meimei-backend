@@ -4,6 +4,7 @@ import com.github.pagehelper.PageHelper;
 import com.mm.backend.common.PageInfo;
 import com.mm.backend.common.StringUtils;
 import com.mm.backend.dao.*;
+import com.mm.backend.exceptions.BusinessException;
 import com.mm.backend.pojo.*;
 import com.mm.backend.service.ActorBackendService;
 import com.mm.backend.service.PictureBackendService;
@@ -17,6 +18,8 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import static com.mm.backend.common.ResponseCode.PICTURE_COLLECT_NOT_EXIST;
 
 /**
  * @ClassName PictureBackendServiceImpl
@@ -65,10 +68,10 @@ public class PictureBackendServiceImpl implements PictureBackendService {
         return pageInfo;
     }
 
-    public PictureCollectDetailBackendVo getPictureCollectDetails(Integer collectId) throws Exception {
+    public PictureCollectDetailBackendVo getPictureCollectDetails(Integer collectId) throws BusinessException {
         PictureAlbum pictureAlbum = pictureAlbumMapper.selectByPrimaryKey(collectId);
         if(null == pictureAlbum){
-            throw new Exception("图集不存在");
+            throw new BusinessException(PICTURE_COLLECT_NOT_EXIST);
         }
         PictureCollectDetailBackendVo pictureCollectDetailBackendVo = PictureAssembleHelper.assemblePictureDetailsNew(pictureAlbum);
         if(StringUtils.isNotBlank(pictureAlbum.getActorId())) {

@@ -7,6 +7,7 @@ import com.mm.backend.dao.ActorMapper;
 import com.mm.backend.dao.FavorateVideoMapper;
 import com.mm.backend.dao.VideoMapper;
 import com.mm.backend.dao.VideoThumbmailMapper;
+import com.mm.backend.exceptions.BusinessException;
 import com.mm.backend.pojo.*;
 import com.mm.backend.service.VideoBackendService;
 import com.mm.backend.vo.VideoDetailBackendVo;
@@ -16,6 +17,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+
+import static com.mm.backend.common.ResponseCode.VIDIO_NOT_EXIST;
 
 /**
  * @ClassName VideoBackendServiceImpl
@@ -46,10 +49,10 @@ public class VideoBackendServiceImpl implements VideoBackendService {
         return pageInfo;
     }
 
-    public VideoDetailBackendVo getVideoDetails(Integer videoId) throws Exception{
+    public VideoDetailBackendVo getVideoDetails(Integer videoId) throws BusinessException {
         Video video = videoMapper.selectByPrimaryKey(videoId);
         if(null == video){
-            throw new Exception("视频不存在");
+            throw new BusinessException(VIDIO_NOT_EXIST);
         }
 
         List<VideoThumbmail> videoThumbmails = videoThumbmailMapper.selectByVideoId(videoId);

@@ -3,6 +3,7 @@ package com.mm.backend.controller;
 import com.mm.backend.action.*;
 import com.mm.backend.common.PageInfo;
 import com.mm.backend.common.RestResult;
+import com.mm.backend.exceptions.BusinessException;
 import com.mm.backend.interceptor.RequestHeaderContext;
 import com.mm.backend.service.PictureBackendService;
 import com.mm.backend.vo.PictureCollectDetailBackendVo;
@@ -10,6 +11,8 @@ import com.mm.backend.vo.PictureListBackendVo;
 import com.mm.backend.vo.UserBackendVo;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -17,16 +20,19 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
+import static com.mm.backend.common.ResponseCode.PICTURE_FAVORATE_FAILED;
+import static com.mm.backend.common.ResponseCode.PICTURE_UNFAVORATE_FAILED;
+
 /**
  * @ClassName PictureBackendController
  * @Description TODO
  * @Date 2019/7/3 20:43
  */
-
 @RestController
 @RequestMapping(value = "/backend/picture")
 @Api(tags = "图集相关API")
 public class PictureBackendController {
+    private static final Logger logger = LoggerFactory.getLogger(PictureBackendController.class);
 
     @Autowired
     private PictureBackendService pictureBackendService;
@@ -38,8 +44,8 @@ public class PictureBackendController {
         try {
             PictureCollectDetailBackendVo p = pictureBackendService.getPictureCollectDetails(28782);
             return RestResult.createBySuccess(p);
-        } catch (Exception e){
-            return RestResult.createByErrorMessage(e.getMessage());
+        } catch (BusinessException e){
+            return new RestResult<>(e.getErrorCode(), e.getErrorMsg());
         }
     }
 
@@ -58,8 +64,8 @@ public class PictureBackendController {
         try {
             PictureCollectDetailBackendVo p = pictureBackendService.getPictureCollectDetails(action.getId());
             return RestResult.createBySuccess(p);
-        } catch (Exception e){
-            return RestResult.createByErrorMessage(e.getMessage());
+        } catch (BusinessException e){
+            return new RestResult<>(e.getErrorCode(), e.getErrorMsg());
         }
     }
 
@@ -72,7 +78,7 @@ public class PictureBackendController {
         if(ret) {
             return RestResult.createBySuccess();
         } else {
-            return RestResult.createByError();
+            return new RestResult<>(PICTURE_FAVORATE_FAILED);
         }
     }
 
@@ -85,7 +91,7 @@ public class PictureBackendController {
         if(ret) {
             return RestResult.createBySuccess();
         } else {
-            return RestResult.createByError();
+            return new RestResult<>(PICTURE_UNFAVORATE_FAILED);
         }
     }
 

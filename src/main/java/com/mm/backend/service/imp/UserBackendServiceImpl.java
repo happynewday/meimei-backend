@@ -2,6 +2,7 @@ package com.mm.backend.service.imp;
 
 import com.mm.backend.common.StringUtils;
 import com.mm.backend.dao.UserMapper;
+import com.mm.backend.exceptions.BusinessException;
 import com.mm.backend.pojo.User;
 import com.mm.backend.redis.RedisService;
 import com.mm.backend.service.UserBackendService;
@@ -10,6 +11,8 @@ import com.mm.backend.vo.assemble.UserAssembleHelper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
+
+import static com.mm.backend.common.ResponseCode.*;
 
 /**
  * @ClassName UserBackendServiceImpl
@@ -24,10 +27,10 @@ public class UserBackendServiceImpl implements UserBackendService {
     @Autowired
     private RedisService redisService;
 
-    public UserBackendVo    userRegist(String uuid, String username, String password) throws Exception{
+    public UserBackendVo userRegist(String uuid, String username, String password) throws BusinessException {
         User user = userMapper.selectByUsername(username);
         if(null != user){
-            throw new Exception("该账号已存在");
+            throw new BusinessException(USER_REGIST_ACCOUNT_ALREADY_EXIST);
         }
 
         BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
@@ -45,7 +48,7 @@ public class UserBackendServiceImpl implements UserBackendService {
                 build();
 
         if(0 == userMapper.insertSelective(user)){
-            throw new Exception("添加用户失败");
+            throw new BusinessException(USER_REGIST_ADD_ACCOUNT_FAILED);
         }
         user = userMapper.selectByUsername(username);
 
@@ -54,15 +57,15 @@ public class UserBackendServiceImpl implements UserBackendService {
         return UserAssembleHelper.assembleUserAuthInfo(user);
     }
 
-    public UserBackendVo login(String username, String password, String uuid) throws Exception {
+    public UserBackendVo login(String username, String password, String uuid) throws BusinessException {
         User user = userMapper.selectByUsername(username);
         if(null == user){
-            throw new Exception("用户不存在");
+            throw new BusinessException(USER_LOGIN_ACCOUNT_OR_PASSWD_WRONG);
         }
 
         BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
         if(!encoder.matches(password, user.getPassword())){
-            throw new Exception("密码错误");
+            throw new BusinessException(USER_LOGIN_ACCOUNT_OR_PASSWD_WRONG);
         }
 
         //绑定账号和uuid
@@ -85,28 +88,12 @@ public class UserBackendServiceImpl implements UserBackendService {
         return UserAssembleHelper.assembleUserAuthInfo(user);
     }
 
-    public UserBackendVo getUserInfo(Integer uid, String uuid) throws RuntimeException{
-        User user;
-        if(null != uid) {
-            user = userMapper.selectByPrimaryKey(uid);
-            if(null == user){
-                throw new RuntimeException("用户不存在");
-            }
-        } else {
-            user = userMapper.selectByUuid(uuid);
-            if(null == user){
-                long time = System.currentTimeMillis();
-                user = User.builder().
-                        uuid(uuid).
-                        createTime(time).
-                        build();
-
-                if(0 == userMapper.insertSelective(user)){
-                    throw new RuntimeException("添加用户失败");
-                }
-            }
-            user = userMapper.selectByUuid(uuid);
+    public UserBackendVo getUserInfo(Integer uid, String uuid) throws BusinessException{
+        User user = userMapper.selectByPrimaryKey(uid);
+        if(null == user){
+            throw new BusinessException(USER_INFO_USER_NOT_EXIST);
         }
+
         return UserAssembleHelper.assembleUserAuthInfo(user);
     }
 }

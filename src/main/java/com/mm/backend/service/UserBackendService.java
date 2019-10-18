@@ -1,5 +1,6 @@
 package com.mm.backend.service;
 
+import com.mm.backend.exceptions.BusinessException;
 import com.mm.backend.vo.UserBackendVo;
 
 /**
@@ -8,9 +9,9 @@ import com.mm.backend.vo.UserBackendVo;
  * @Date 2019/7/8 9:59
  */
 public interface UserBackendService {
-    UserBackendVo userRegist(String uuid, String username, String password) throws Exception;
+    UserBackendVo userRegist(String uuid, String username, String password) throws BusinessException;
 
-    UserBackendVo login(String username, String password, String uuid) throws Exception;
+    UserBackendVo login(String username, String password, String uuid) throws BusinessException;
 
-    UserBackendVo getUserInfo(Integer uid, String uuid) throws RuntimeException;
+    UserBackendVo getUserInfo(Integer uid, String uuid) throws BusinessException;
 }

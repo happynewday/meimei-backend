@@ -1,6 +1,7 @@
 package com.mm.backend.service;
 
 import com.mm.backend.common.PageInfo;
+import com.mm.backend.exceptions.BusinessException;
 import com.mm.backend.vo.VideoDetailBackendVo;
 import com.mm.backend.vo.VideoListBackendVo;
 
@@ -12,7 +13,7 @@ import com.mm.backend.vo.VideoListBackendVo;
 public interface VideoBackendService {
     PageInfo<VideoListBackendVo> getVideoList(Integer pageNum, Integer pageSize);
 
-    VideoDetailBackendVo getVideoDetails(Integer videoId) throws Exception;
+    VideoDetailBackendVo getVideoDetails(Integer videoId) throws BusinessException;
 
     boolean addFavorateVideo(Integer userId, Integer videoId);
 

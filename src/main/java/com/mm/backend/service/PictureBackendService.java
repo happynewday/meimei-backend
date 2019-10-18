@@ -1,6 +1,7 @@
 package com.mm.backend.service;
 
 import com.mm.backend.common.PageInfo;
+import com.mm.backend.exceptions.BusinessException;
 import com.mm.backend.vo.PictureCollectDetailBackendVo;
 import com.mm.backend.vo.PictureListBackendVo;
 
@@ -12,7 +13,7 @@ import com.mm.backend.vo.PictureListBackendVo;
 public interface PictureBackendService {
     PageInfo<PictureListBackendVo> getPictureCollectList(Integer actorId, String tag, Integer pageNum, Integer pageSize);
 
-    PictureCollectDetailBackendVo getPictureCollectDetails(Integer collectId) throws Exception;
+    PictureCollectDetailBackendVo getPictureCollectDetails(Integer collectId) throws BusinessException;
 
     boolean addFavoratePicture(Integer userId, Integer collectId);
 

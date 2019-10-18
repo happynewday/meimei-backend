@@ -5,6 +5,7 @@ import com.mm.backend.action.RegistUserBackendAction;
 import com.mm.backend.action.ThirdLoginBackendAction;
 import com.mm.backend.action.user.UserInfoBackendAction;
 import com.mm.backend.common.RestResult;
+import com.mm.backend.exceptions.BusinessException;
 import com.mm.backend.interceptor.RequestHeaderContext;
 import com.mm.backend.redis.RedisService;
 import com.mm.backend.service.UserBackendService;
@@ -46,8 +47,8 @@ public class UserBackendController {
             UserBackendVo userInfo = userBackendService.userRegist(action.getUuid(), action.getUsername(), action.getPassword());
             response.setHeader("x-auth-token", userInfo.getAccess_token());
             return RestResult.createBySuccess(userInfo);
-        } catch (Exception e){
-            return RestResult.createByErrorMessage(e.getMessage());
+        } catch (BusinessException e){
+            return new RestResult<>(e.getErrorCode(), e.getErrorMsg());
         }
     }
 
@@ -59,8 +60,8 @@ public class UserBackendController {
             UserBackendVo userInfo = userBackendService.login(action.getUsername(), action.getPassword(), action.getUuid());
             response.setHeader("x-auth-token", userInfo.getAccess_token());
             return RestResult.createBySuccess(userInfo);
-        } catch (Exception e){
-            return RestResult.createByErrorMessage(e.getMessage());
+        } catch (BusinessException e){
+            return new RestResult<>(e.getErrorCode(), e.getErrorMsg());
         }
     }
 
@@ -89,8 +90,8 @@ public class UserBackendController {
         try {
             UserBackendVo userBackendVo = userBackendService.getUserInfo(uid, uuid);
             return RestResult.createBySuccess(userBackendVo);
-        }catch(RuntimeException e){
-            return RestResult.createByErrorMessage(e.getMessage());
+        }catch(BusinessException e){
+            return new RestResult<>(e.getErrorCode(), e.getErrorMsg());
         }
     }
 }

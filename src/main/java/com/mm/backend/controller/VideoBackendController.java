@@ -3,6 +3,7 @@ package com.mm.backend.controller;
 import com.mm.backend.action.*;
 import com.mm.backend.common.PageInfo;
 import com.mm.backend.common.RestResult;
+import com.mm.backend.exceptions.BusinessException;
 import com.mm.backend.interceptor.RequestHeaderContext;
 import com.mm.backend.service.VideoBackendService;
 import com.mm.backend.vo.PictureListBackendVo;
@@ -16,6 +17,9 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
+
+import static com.mm.backend.common.ResponseCode.VIDEO_FAVORATE_FAILED;
+import static com.mm.backend.common.ResponseCode.VIDEO_UNFAVORATE_FAILED;
 
 /**
  * @ClassName VideoBackendController
@@ -45,8 +49,8 @@ public class VideoBackendController {
         try {
             VideoDetailBackendVo videoDetailBackendVo = videoBackendService.getVideoDetails(action.getId());
             return RestResult.createBySuccess(videoDetailBackendVo);
-        } catch (Exception e){
-            return RestResult.createByErrorMessage(e.getMessage());
+        } catch (BusinessException e){
+            return new RestResult<>(e.getErrorCode(), e.getErrorMsg());
         }
     }
 
@@ -59,7 +63,7 @@ public class VideoBackendController {
         if(ret){
             return RestResult.createBySuccess();
         } else {
-            return RestResult.createByError();
+            return new RestResult<>(VIDEO_FAVORATE_FAILED);
         }
     }
 
@@ -72,7 +76,7 @@ public class VideoBackendController {
         if(ret){
             return RestResult.createBySuccess();
         } else {
-            return RestResult.createByError();
+            return new RestResult<>(VIDEO_UNFAVORATE_FAILED);
         }
     }
 }

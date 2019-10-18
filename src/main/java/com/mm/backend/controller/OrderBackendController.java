@@ -5,6 +5,7 @@ import com.mm.backend.action.PictureListBackendAction;
 import com.mm.backend.action.PrepayBackendAction;
 import com.mm.backend.common.PageInfo;
 import com.mm.backend.common.RestResult;
+import com.mm.backend.exceptions.BusinessException;
 import com.mm.backend.interceptor.AuthInterceptor;
 import com.mm.backend.interceptor.RequestHeaderContext;
 import com.mm.backend.service.OrderBackendService;
@@ -26,6 +27,8 @@ import org.springframework.web.bind.annotation.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+
+import static com.mm.backend.common.ResponseCode.ORDER_NOTIFY_FAILED;
 
 /**
  * @ClassName PayBackendController
@@ -62,8 +65,8 @@ public class OrderBackendController {
         try {
             OrderRequestBackendVo orderRequestBackendVo = orderBackendService.orderRequest(uid, action.getId());
             return RestResult.createBySuccess(orderRequestBackendVo);
-        }catch (Exception e) {
-            return RestResult.createByErrorMessage(e.getMessage());
+        }catch (BusinessException e) {
+            return new RestResult(e.getErrorCode(), e.getErrorMsg());
         }
     }
 
@@ -76,8 +79,8 @@ public class OrderBackendController {
         try {
             PrepayBackendVo prepayBackendVo = orderBackendService.prepay(uid, action.getOrderid(),action.getIstype());
             return RestResult.createBySuccess(prepayBackendVo);
-        }catch (Exception e) {
-            return RestResult.createByErrorMessage(e.getMessage());
+        }catch (BusinessException e) {
+            return new RestResult(e.getErrorCode(), e.getErrorMsg());
         }
     }
 
@@ -89,7 +92,7 @@ public class OrderBackendController {
         if(orderBackendService.notify(params)) {
             return RestResult.createBySuccess();
         } else {
-            return RestResult.createByError();
+            return new RestResult<>(ORDER_NOTIFY_FAILED);
         }
     }
 
