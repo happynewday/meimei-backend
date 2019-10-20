@@ -24,6 +24,8 @@ public enum ResponseCode implements IResultType {
     USER_REGIST_ADD_ACCOUNT_FAILED(151,"添加账号失败"),
 
     USER_LOGIN_ACCOUNT_OR_PASSWD_WRONG(160,"账号或密码错误"),
+    USER_LOGIN_USER_NOT_LOGIN(161,"用户未登录"),
+    USER_LOGIN_NO_AUTHORITY(162,"用户权限不足"),
 
     USER_INFO_USER_NOT_EXIST(170,"用户不存在"),
 
