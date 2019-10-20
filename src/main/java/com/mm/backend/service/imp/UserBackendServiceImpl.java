@@ -107,6 +107,7 @@ public class UserBackendServiceImpl implements UserBackendService {
         }
         user.setLevel(level);
         userMapper.updateByPrimaryKeySelective(user);
+        updateRedis(user.getAccessToken(), user.getAccessToken(), uid, level);
         return true;
     }
 
