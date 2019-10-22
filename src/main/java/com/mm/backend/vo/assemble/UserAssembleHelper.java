@@ -1,5 +1,6 @@
 package com.mm.backend.vo.assemble;
 
+import com.mm.backend.enums.UserLevelEnum;
 import com.mm.backend.pojo.PictureCollect;
 import com.mm.backend.pojo.User;
 import com.mm.backend.vo.PictureListBackendVo;
@@ -22,9 +23,19 @@ public class UserAssembleHelper {
                 nickname(user.getNickname()).
                 phone(user.getPhone()).
                 level(user.getLevel().intValue()).
+                levelName(getLevelName(user.getLevel().intValue())).
                 createTime(user.getCreateTime()).
                 avatar(user.getAvatar()).
                 access_token(user.getAccessToken()).
                 build();
+    }
+
+    private static String getLevelName(Integer level){
+        for(UserLevelEnum e: UserLevelEnum.values()) {
+            if (level.equals(e.getLevel())) {
+                return e.getName();
+            }
+        }
+        return "游客";
     }
 }

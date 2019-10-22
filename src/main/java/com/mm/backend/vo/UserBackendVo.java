@@ -56,6 +56,12 @@ public class UserBackendVo {
     private Integer level;
 
     /**
+     * 等级名称
+     */
+    @ApiModelProperty(value = "用户等级名称")
+    private String levelName;
+
+    /**
      * 创建时间
      */
     @ApiModelProperty(value = "创建时间")
