@@ -62,6 +62,7 @@ public class PictureBackendServiceImpl implements PictureBackendService {
         } else {
             pictureList = pictureAlbumMapper.selectAll();
         }
+        formatPictureUrlList(pictureList);
         PageInfo pageInfo = new PageInfo(pictureList);
 
         pageInfo.setList(AssemblePictureList(pictureList));
@@ -73,6 +74,7 @@ public class PictureBackendServiceImpl implements PictureBackendService {
         if(null == pictureAlbum){
             throw new BusinessException(PICTURE_COLLECT_NOT_EXIST);
         }
+        formatPictureUrl(pictureAlbum);
         PictureCollectDetailBackendVo pictureCollectDetailBackendVo = PictureAssembleHelper.assemblePictureDetailsNew(pictureAlbum);
         if(StringUtils.isNotBlank(pictureAlbum.getActorId())) {
             pictureCollectDetailBackendVo.setActorInfo(actorBackendService.getActorDetail(pictureAlbum.getActorId()));
@@ -129,5 +131,20 @@ public class PictureBackendServiceImpl implements PictureBackendService {
             pictureListVos.add(pictureVo);
         }
         return pictureListVos;
+    }
+
+    private void formatPictureUrl(PictureAlbum picture){
+        if(StringUtils.isNotBlank(picture.getSourceImgs())) {
+            picture.setSourceImgs(picture.getSourceImgs().replaceAll("http://picture-cors.iojkj.cn/a/1/", "http://mm.iojkj.cn/images/"));
+        }
+        if(StringUtils.isNotBlank(picture.getCover())){
+            picture.setCover(picture.getCover().replaceAll("http://picture-cors.iojkj.cn/a/1/", "http://mm.iojkj.cn/images/"));
+        }
+    }
+
+    private void formatPictureUrlList(List<PictureAlbum> pictures){
+        for(PictureAlbum picture: pictures){
+            formatPictureUrl(picture);
+        }
     }
 }
