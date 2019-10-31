@@ -136,8 +136,6 @@ public class PictureBackendServiceImpl implements PictureBackendService {
     private void formatPictureUrl(PictureAlbum picture){
         if(StringUtils.isNotBlank(picture.getSourceImgs())) {
             picture.setSourceImgs(picture.getSourceImgs().replaceAll("http://picture-cors.iojkj.cn/a/1/", "http://mm.iojkj.cn/images/"));
-            picture.setSourceImgs(picture.getSourceImgs().replaceAll(".jpg", ".jpg-list_area"));
-            picture.setSourceImgs(picture.getSourceImgs().replaceAll(".png", ".png-list_area"));
         }
         if(StringUtils.isNotBlank(picture.getCover())){
             picture.setCover(picture.getCover().replaceAll("http://picture-cors.iojkj.cn/a/1/", "http://mm.iojkj.cn/images/"));
