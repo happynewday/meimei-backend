@@ -159,6 +159,7 @@ public class OrderBackendServiceImpl implements OrderBackendService {
             }
 
             userBackendService.setVIPLevel(order.getUserId(), level);
+            logger.warn("user buy vip, uid={}, level={}", order.getUserId(), level);
         } else {
             logger.error("[pay notify]checksum failed, the key from remote is {}", notifyParams.get("key"));
             return false;

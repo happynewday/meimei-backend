@@ -2,6 +2,7 @@ package com.mm.backend.interceptor;
 
 import com.mm.backend.common.ResponseCode;
 import com.mm.backend.common.RestResult;
+import com.mm.backend.common.StringUtils;
 import com.mm.backend.redis.RedisService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -38,11 +39,13 @@ public class AuthInterceptor extends HandlerInterceptorAdapter {
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception
     {
+        parseAuthInfo(request);
         String requestUri = request.getRequestURI().toLowerCase();
 
         if(requestUri.equals("/backend/picture/unfavorate")
         || requestUri.equals("/backend/picture/favorate")
         || requestUri.equals("/backend/picture/favoratepictures")
+        || requestUri.equals("/backend/picture/collectDetail")
         || requestUri.equals("/backend/order/orderrequest")
         || requestUri.equals("/backend/order/prepay")
         || requestUri.equals("/backend/video/favorate")
@@ -58,18 +61,37 @@ public class AuthInterceptor extends HandlerInterceptorAdapter {
         return true;
     }
 
+    private void parseAuthInfo(HttpServletRequest request){
+        String token = request.getHeader(HEAD_AUTH_TOKEN);
+        if(StringUtils.isNotBlank(token)){
+            Object userObject = this.redisService.get(token);
+            if(null != userObject) {
+                String[] userInfo = userObject.toString().split(":");
+                String userId = userInfo[0];
+                String userLevel = userInfo[1];
+
+                new RequestHeaderContext.RequestHeaderContextBuild()
+                        .token(token)
+                        .userId(userId)
+                        .userLevel(userLevel)
+                        .bulid();
+            }
+        }
+    }
+
     private boolean checkAuthInfo(HttpServletRequest request,HttpServletResponse response,String requestUri)
     {
-        String token = request.getHeader(HEAD_AUTH_TOKEN);
-        Object userObject = this.redisService.get(token);
-        if(null == userObject){
+        if(StringUtils.isBlank(RequestHeaderContext.getInstance().getUserId())){
             returnJson(response, USER_LOGIN_USER_NOT_LOGIN);
             //throw new Exception("用户未登录");
             return false;
         }
-        String[] userInfo = userObject.toString().split(":");
-        String userId = userInfo[0];
-        String userLevel = userInfo[1];
+
+        String userLevel = RequestHeaderContext.getInstance().getLevel();
+        if(Integer.valueOf(userLevel) < 1){
+            returnJson(response,USER_LOGIN_NO_AUTHORITY);
+        }
+
         if((requestUri.equals("/backend/picture/unfavorate")
                 || requestUri.equals("/backend/picture/favorate")
                 || requestUri.equals("/backend/picture/favoratepictures"))
@@ -77,11 +99,6 @@ public class AuthInterceptor extends HandlerInterceptorAdapter {
             returnJson(response,USER_LOGIN_NO_AUTHORITY);
         }
 
-        new RequestHeaderContext.RequestHeaderContextBuild()
-                .token(token)
-                .userId(userId)
-                .userLevel(userLevel)
-                .bulid();
         return true;
     }
 

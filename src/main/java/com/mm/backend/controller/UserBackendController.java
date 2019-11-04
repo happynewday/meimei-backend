@@ -11,6 +11,8 @@ import com.mm.backend.redis.RedisService;
 import com.mm.backend.service.UserBackendService;
 import com.mm.backend.vo.UserBackendVo;
 import io.swagger.annotations.ApiOperation;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -32,6 +34,7 @@ import javax.servlet.http.HttpServletResponse;
 @RequestMapping(value = "/backend/user")
 @Api(tags = "用户API信息")
 public class UserBackendController {
+    private static final Logger logger = LoggerFactory.getLogger(UserBackendController.class);
 
     @Autowired
     private UserBackendService userBackendService;
@@ -59,6 +62,7 @@ public class UserBackendController {
         try {
             UserBackendVo userInfo = userBackendService.login(action.getUsername(), action.getPassword(), action.getUuid());
             response.setHeader("x-auth-token", userInfo.getAccess_token());
+            logger.warn("user login, username={}, uid={}", action.getUsername(), userInfo.getUserId());
             return RestResult.createBySuccess(userInfo);
         } catch (BusinessException e){
             return new RestResult<>(e.getErrorCode(), e.getErrorMsg());
