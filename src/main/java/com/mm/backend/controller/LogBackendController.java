@@ -20,9 +20,9 @@ public class LogBackendController {
     private static final Logger logger = LoggerFactory.getLogger(LogBackendController.class);
 
 
-    @RequestMapping(value = "/print/{source}",method = RequestMethod.POST,
+    @RequestMapping(value = "/{source}",method = RequestMethod.POST,
             produces="application/json;charset=UTF-8")
-    @ApiOperation(value = "双11商品列表", notes = "双11商品列表,category=1为淘宝商品,category=2为拼多多商品")
+    @ApiOperation(value = "日志打印", notes = "日志打印，source为来源")
     void getProductList(@PathVariable("source") String source) {
         Integer uid = null;
         if(null != RequestHeaderContext.getInstance()) {
