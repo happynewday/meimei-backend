@@ -13,6 +13,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.servlet.http.HttpServletRequest;
+
 @RestController
 @RequestMapping(value = "/backend/log")
 @Api(tags = "日志相关API")
@@ -23,7 +25,7 @@ public class LogBackendController {
     @RequestMapping(value = "/{source}",method = RequestMethod.POST,
             produces="application/json;charset=UTF-8")
     @ApiOperation(value = "日志打印", notes = "日志打印，source为来源")
-    void getProductList(@PathVariable("source") String source) {
+    void getProductList(@PathVariable("source") String source, HttpServletRequest request) {
         Integer uid = null;
         if(null != RequestHeaderContext.getInstance()) {
             String uidStr = RequestHeaderContext.getInstance().getUserId();
@@ -31,7 +33,8 @@ public class LogBackendController {
                 uid = Integer.valueOf(uidStr);
             }
         }
+        String remoteIp = request.getRemoteAddr();
 
-        logger.warn("user entered, uid={}, source={}", uid, source);
+        logger.warn("user entered, uid={}, source={}, remoteAddr={}", uid, source, remoteIp);
     }
 }
