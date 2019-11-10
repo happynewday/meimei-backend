@@ -88,7 +88,8 @@ public class AuthInterceptor extends HandlerInterceptorAdapter {
         }
 
         String userLevel = RequestHeaderContext.getInstance().getLevel();
-        if(Integer.valueOf(userLevel) < 1){
+        if(requestUri.equals("/backend/picture/collectDetail")
+                && (Integer.valueOf(userLevel) < 1)){
             returnJson(response,USER_LOGIN_NO_AUTHORITY);
         }
 
