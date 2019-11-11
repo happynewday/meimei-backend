@@ -3,8 +3,11 @@ package com.mm.backend.controller;
 import com.mm.backend.action.LoginBackendAction;
 import com.mm.backend.action.RegistUserBackendAction;
 import com.mm.backend.action.ThirdLoginBackendAction;
+import com.mm.backend.action.user.ChangePasswdBackendAction;
 import com.mm.backend.action.user.UserInfoBackendAction;
 import com.mm.backend.common.RestResult;
+import com.mm.backend.common.StringUtils;
+import com.mm.backend.common.UidUtil;
 import com.mm.backend.exceptions.BusinessException;
 import com.mm.backend.interceptor.RequestHeaderContext;
 import com.mm.backend.redis.RedisService;
@@ -22,6 +25,8 @@ import org.springframework.web.bind.annotation.RestController;
 import io.swagger.annotations.Api;
 
 import javax.servlet.http.HttpServletResponse;
+
+import static com.mm.backend.common.ResponseCode.USER_LOGIN_USER_NOT_LOGIN;
 
 /**
  * @ClassName UserBackendController
@@ -97,5 +102,22 @@ public class UserBackendController {
         }catch(BusinessException e){
             return new RestResult<>(e.getErrorCode(), e.getErrorMsg());
         }
+    }
+
+    @RequestMapping(value = "/changePasswd",method = RequestMethod.POST,
+            headers="Content-Type=application/json;charset=UTF-8", produces="application/json;charset=UTF-8")
+    @ApiOperation(value = "获取用户信息", notes = "获取用户信息")
+    RestResult<Void> changePasswd(@RequestBody @Validated ChangePasswdBackendAction action) {
+        Integer uid = UidUtil.getUidFromRequest();
+        if(StringUtils.isBlank(uid)){
+            return new RestResult<>(USER_LOGIN_USER_NOT_LOGIN);
+        }
+        String passwd = action.getPasswd();
+        try{
+            userBackendService.changePasswd(uid, passwd);
+        }catch(BusinessException e){
+            return new RestResult<>(e.getErrorCode(), e.getErrorMsg());
+        }
+        return RestResult.createBySuccess();
     }
 }

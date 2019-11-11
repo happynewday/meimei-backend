@@ -111,6 +111,19 @@ public class UserBackendServiceImpl implements UserBackendService {
         return true;
     }
 
+    @Override
+    public void changePasswd(Integer uid, String password) throws BusinessException{
+        User user = userMapper.selectByPrimaryKey(uid);
+        if(null == user){
+            throw new BusinessException(USER_INFO_USER_NOT_EXIST);
+        }
+
+        BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+        String encodedPassword =  passwordEncoder.encode(password);
+        user.setPassword(encodedPassword);
+        userMapper.updateByPrimaryKeySelective(user);
+    }
+
     private void updateRedis(String oldToken, String newToken, Integer userId, Byte userLevel){
         //更新redis
         if(StringUtils.isNotBlank(oldToken)) {
