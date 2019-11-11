@@ -74,8 +74,14 @@ public class UserBackendVo {
     private String avatar;
 
     /**
-     * 标识
+     * 标识, 这里用下划线写法是跟前端特别约定，不要改
      */
     @ApiModelProperty(value = "标识")
     private String access_token;
+
+    /**
+     * 账户到期时间
+     */
+    @ApiModelProperty(value = "账户到期时间")
+    private String validTime;
 }

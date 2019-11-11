@@ -53,6 +53,7 @@ public class UserBackendController {
     RestResult<UserBackendVo> registUser(@RequestBody @Validated RegistUserBackendAction action, HttpServletResponse response) {
         try {
             UserBackendVo userInfo = userBackendService.userRegist(action.getUuid(), action.getUsername(), action.getPassword());
+            userInfo.setValidTime("2020-11-10");
             response.setHeader("x-auth-token", userInfo.getAccess_token());
             return RestResult.createBySuccess(userInfo);
         } catch (BusinessException e){
@@ -68,6 +69,7 @@ public class UserBackendController {
             UserBackendVo userInfo = userBackendService.login(action.getUsername(), action.getPassword(), action.getUuid());
             response.setHeader("x-auth-token", userInfo.getAccess_token());
             logger.warn("user login, username={}, uid={}", action.getUsername(), userInfo.getUserId());
+            userInfo.setValidTime("2020-11-10");
             return RestResult.createBySuccess(userInfo);
         } catch (BusinessException e){
             return new RestResult<>(e.getErrorCode(), e.getErrorMsg());
@@ -98,6 +100,7 @@ public class UserBackendController {
         String uuid = action.getUuid();
         try {
             UserBackendVo userBackendVo = userBackendService.getUserInfo(uid, uuid);
+            userBackendVo.setValidTime("2020-11-10");
             return RestResult.createBySuccess(userBackendVo);
         }catch(BusinessException e){
             return new RestResult<>(e.getErrorCode(), e.getErrorMsg());
