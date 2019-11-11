@@ -81,7 +81,7 @@ public class AuthInterceptor extends HandlerInterceptorAdapter {
 
     private boolean checkAuthInfo(HttpServletRequest request,HttpServletResponse response,String requestUri)
     {
-        if(StringUtils.isBlank(RequestHeaderContext.getInstance().getUserId())){
+        if(StringUtils.isBlank(RequestHeaderContext.getInstance()) || StringUtils.isBlank(RequestHeaderContext.getInstance().getUserId())){
             returnJson(response, USER_LOGIN_USER_NOT_LOGIN);
             //throw new Exception("用户未登录");
             return false;
