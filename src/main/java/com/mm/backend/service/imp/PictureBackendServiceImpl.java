@@ -6,6 +6,7 @@ import com.mm.backend.common.StringUtils;
 import com.mm.backend.dao.*;
 import com.mm.backend.exceptions.BusinessException;
 import com.mm.backend.pojo.*;
+import com.mm.backend.redis.RedisService;
 import com.mm.backend.service.ActorBackendService;
 import com.mm.backend.service.PictureBackendService;
 import com.mm.backend.vo.PictureCollectDetailBackendVo;
@@ -14,6 +15,7 @@ import com.mm.backend.vo.assemble.PictureAssembleHelper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.cache.CacheProperties;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -51,6 +53,9 @@ public class PictureBackendServiceImpl implements PictureBackendService {
     @Autowired
     private ActorBackendService actorBackendService;
 
+    @Autowired
+    private RedisService redisService;
+
     public PageInfo<PictureListBackendVo> getPictureCollectList(Integer actorId, String tag, Integer pageNum, Integer pageSize){
         PageHelper.startPage(pageNum,pageSize);
         //List<PictureCollectWithActor> pictureList;
@@ -67,6 +72,28 @@ public class PictureBackendServiceImpl implements PictureBackendService {
 
         pageInfo.setList(AssemblePictureList(pictureList));
         return pageInfo;
+    }
+
+    public Integer getPickedCollectId(Integer uid) {
+        if(null != uid) {
+            Integer loop = 0;
+            while (loop < 3) {
+                List<String> pickedCollects = redisService.srandmember("_picked_collect", 10);
+                for (String pickedCollect : pickedCollects) {
+                    if (!redisService.sismember(getUserHistoryRedisKey(uid), pickedCollect)) {
+                        redisService.sadd(getUserHistoryRedisKey(uid), pickedCollect);
+                        return Integer.valueOf(pickedCollect);
+                    }
+                }
+                loop++;
+            }
+        } else {
+            List<String> pickedCollects = redisService.srandmember("_picked_collect", 1);
+            if(pickedCollects.size() > 0){
+                return Integer.valueOf(pickedCollects.get(0));
+            }
+        }
+        return 28782;
     }
 
     public PictureCollectDetailBackendVo getPictureCollectDetails(Integer collectId) throws BusinessException {
@@ -148,5 +175,9 @@ public class PictureBackendServiceImpl implements PictureBackendService {
         for(PictureAlbum picture: pictures){
             formatPictureUrl(picture);
         }
+    }
+
+    private String getUserHistoryRedisKey(Integer uid){
+        return "_uh:" + uid;
     }
 }

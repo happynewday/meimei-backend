@@ -1,8 +1,11 @@
 package com.mm.backend.redis;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.concurrent.TimeUnit;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
+import org.springframework.data.redis.core.SetOperations;
 import org.springframework.stereotype.Component;
 import org.springframework.util.CollectionUtils;
 
@@ -119,4 +122,33 @@ public class RedisService {
         }
     }
 
+    /**
+     * 获取set中一个或多个随机元素
+     * @param key 键
+     * @param count 元素数量
+     * @return 值列表
+     */
+    public List<String> srandmember(String key, Integer count){
+        return key==null?new ArrayList<>():redisTemplate.opsForSet().randomMembers(key, count);
+    }
+
+    /**
+     * 判断是否set中的元素
+     * @param key 键
+     * @param member 元素
+     * @return true是 false 否
+     */
+    public boolean sismember(String key, String member){
+        return key==null?false:redisTemplate.opsForSet().isMember(key, member);
+    }
+
+    /**
+     * 向set中增加元素
+     * @param key 键
+     * @param member 元素
+     * @return 插入的元素数量
+     */
+    public Long sadd(String key, String... member){
+        return redisTemplate.opsForSet().add(key, member);
+    }
 }

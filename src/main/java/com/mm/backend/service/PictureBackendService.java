@@ -20,4 +20,6 @@ public interface PictureBackendService {
     boolean removeFavoratePicture(Integer userId, Integer collectId);
 
     PageInfo<PictureListBackendVo> getFavorateList(Integer userId, Integer pageNum, Integer pageSize);
+
+    Integer getPickedCollectId(Integer uid);
 }

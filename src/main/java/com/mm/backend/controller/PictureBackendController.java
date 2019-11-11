@@ -3,6 +3,7 @@ package com.mm.backend.controller;
 import com.mm.backend.action.*;
 import com.mm.backend.common.PageInfo;
 import com.mm.backend.common.RestResult;
+import com.mm.backend.common.UidUtil;
 import com.mm.backend.exceptions.BusinessException;
 import com.mm.backend.interceptor.RequestHeaderContext;
 import com.mm.backend.service.PictureBackendService;
@@ -55,6 +56,20 @@ public class PictureBackendController {
     RestResult<PageInfo<PictureListBackendVo>> collectList(@RequestBody @Validated PictureListBackendAction action) {
         PageInfo<PictureListBackendVo> page = pictureBackendService.getPictureCollectList(action.getActorId(), action.getTag(), action.getPageNum(), action.getPageSize());
         return RestResult.createBySuccess(page);
+    }
+
+    @RequestMapping(value = "/pickedCollect",method = RequestMethod.POST,
+            headers="Content-Type=application/json;charset=UTF-8", produces="application/json;charset=UTF-8")
+    @ApiOperation(value = "随便看看", notes = "随便看看")
+    RestResult<PictureCollectDetailBackendVo> pickedCollect() {
+        try {
+            Integer uid = UidUtil.getUidFromRequest();
+            Integer pickedCollect = pictureBackendService.getPickedCollectId(uid);
+            PictureCollectDetailBackendVo p = pictureBackendService.getPictureCollectDetails(pickedCollect);
+            return RestResult.createBySuccess(p);
+        } catch (BusinessException e){
+            return new RestResult<>(e.getErrorCode(), e.getErrorMsg());
+        }
     }
 
     @RequestMapping(value = "/collectDetail",method = RequestMethod.POST,
