@@ -39,7 +39,7 @@ public class PictureBackendController {
     private PictureBackendService pictureBackendService;
 
     @RequestMapping(value = "/freePicture",method = RequestMethod.POST,
-            headers="Content-Type=application/json;charset=UTF-8", produces="application/json;charset=UTF-8")
+            produces="application/json;charset=UTF-8")
     @ApiOperation(value = "体验图集详情", notes = "体验图集详情")
     RestResult<PictureCollectDetailBackendVo> freeCollectList() {
         try {
@@ -59,7 +59,7 @@ public class PictureBackendController {
     }
 
     @RequestMapping(value = "/pickedCollect",method = RequestMethod.POST,
-            headers="Content-Type=application/json;charset=UTF-8", produces="application/json;charset=UTF-8")
+            produces="application/json;charset=UTF-8")
     @ApiOperation(value = "随便看看", notes = "随便看看")
     RestResult<PictureCollectDetailBackendVo> pickedCollect() {
         try {
