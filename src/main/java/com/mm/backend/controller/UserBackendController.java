@@ -115,7 +115,7 @@ public class UserBackendController {
         if(StringUtils.isBlank(uid)){
             return new RestResult<>(USER_LOGIN_USER_NOT_LOGIN);
         }
-        String passwd = action.getPasswd();
+        String passwd = action.getPassword();
         try{
             userBackendService.changePasswd(uid, passwd);
         }catch(BusinessException e){

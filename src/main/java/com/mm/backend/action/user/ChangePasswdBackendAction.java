@@ -11,5 +11,5 @@ public class ChangePasswdBackendAction {
      *  新密码
      */
     @ApiModelProperty(value = "新密码", example = "abc")
-    private  String passwd;
+    private  String password;
 }
