@@ -8,8 +8,8 @@ package com.mm.backend.enums;
  **/
 public enum UserLevelEnum {
     NORMAL_MEMBER(1,"普通会员"),
-    ADVANCED_MEMBER(2,"普通会员"),
-    VIP_MEMBER(3,"普通会员");
+    ADVANCED_MEMBER(2,"高级会员"),
+    VIP_MEMBER(3,"VIP会员");
 
     private final Integer level;
     private final String name;
