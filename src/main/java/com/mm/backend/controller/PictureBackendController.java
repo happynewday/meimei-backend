@@ -43,7 +43,8 @@ public class PictureBackendController {
     @ApiOperation(value = "体验图集详情", notes = "体验图集详情")
     RestResult<PictureCollectDetailBackendVo> freeCollectList() {
         try {
-            PictureCollectDetailBackendVo p = pictureBackendService.getPictureCollectDetails(28782);
+            Integer pickedCollect = pictureBackendService.getPickedCollectId(null);
+            PictureCollectDetailBackendVo p = pictureBackendService.getPictureCollectDetails(pickedCollect);
             return RestResult.createBySuccess(p);
         } catch (BusinessException e){
             return new RestResult<>(e.getErrorCode(), e.getErrorMsg());
